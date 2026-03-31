@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FC Atlas Academy — CSS : Blocs & Position</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Nunito:wght@400;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   VARIABLES & RESET
+============================================= */
+:root {
+  --navy:    #1B2A4A;
+  --gold:    #D4AF37;
+  --terra:   #C87941;
+  --cream:   #FEF0DC;
+  --cream2:  #F5E6C8;
+  --green:   #1E8449;
+  --red:     #A93226;
+  --purple:  #6C3483;
+  --r: 4px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--cream);
+  color: var(--navy);
+  min-height: 100vh;
+  font-size: 15px;
+}
+
+/* =============================================
+   HEADER
+============================================= */
+.header {
+  background: var(--navy);
+  padding: 32px 24px 28px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpolygon points='30,2 58,30 30,58 2,30' fill='none' stroke='%23D4AF37' stroke-width='0.9' opacity='0.35'/%3E%3Crect x='18' y='18' width='24' height='24' fill='none' stroke='%23C87941' stroke-width='0.6' opacity='0.25'/%3E%3Ccircle cx='30' cy='30' r='6' fill='none' stroke='%23D4AF37' stroke-width='0.7' opacity='0.3'/%3E%3Cline x1='0' y1='30' x2='60' y2='30' stroke='%23D4AF37' stroke-width='0.3' opacity='0.2'/%3E%3Cline x1='30' y1='0' x2='30' y2='60' stroke='%23D4AF37' stroke-width='0.3' opacity='0.2'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
+}
+.header-flag { font-size: 2.8em; display: block; margin-bottom: 10px; position: relative; z-index: 1; line-height: 1; }
+.header h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.2em, 4vw, 2em);
+  color: var(--gold);
+  position: relative; z-index: 1;
+  letter-spacing: 0.02em;
+}
+.gold-bar { width: 60px; height: 3px; background: var(--gold); margin: 12px auto; border-radius: 2px; position: relative; z-index: 1; }
+.header .sub {
+  color: var(--cream2);
+  font-size: 0.9em;
+  position: relative; z-index: 1;
+  opacity: 0.85;
+}
+
+/* =============================================
+   EXERCISE NAVIGATION
+============================================= */
+.ex-nav {
+  background: var(--cream2);
+  border-bottom: 3px solid var(--gold);
+  padding: 14px 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.ex-btn {
+  background: white;
+  border: 2px solid var(--gold);
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  padding: 9px 14px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.85em;
+  color: var(--navy);
+  transition: background 0.15s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.ex-btn:hover { background: var(--cream); }
+.ex-btn.active {
+  background: var(--gold);
+  color: var(--navy);
+  border-color: var(--gold);
+}
+.ex-num {
+  background: var(--navy);
+  color: var(--gold);
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8em; font-weight: 900;
+  flex-shrink: 0;
+}
+.ex-btn.active .ex-num { background: var(--navy); color: var(--gold); }
+
+/* =============================================
+   EXERCISE PAGES
+============================================= */
+.ex-page { display: none; max-width: 960px; margin: 0 auto; padding: 28px 20px 50px; }
+.ex-page.active { display: block; }
+
+/* Top info row */
+.ex-top { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px; }
+.ex-icon { font-size: 3.2em; line-height: 1; flex-shrink: 0; }
+.ex-info h2 {
+  font-family: 'Cinzel', serif;
+  color: var(--terra);
+  font-size: 1.35em;
+  margin-bottom: 8px;
+}
+.tag-row { display: flex; gap: 5px; flex-wrap: wrap; }
+.tag {
+  padding: 3px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+.tag.navy  { background: var(--navy);  color: var(--gold); }
+.tag.terra { background: var(--terra); color: white; }
+.tag.green { background: var(--green); color: white; }
+.tag.gold  { background: var(--gold);  color: var(--navy); }
+.tag.purple{ background: var(--purple);color: white; }
+
+/* Concept box */
+.concept {
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 12px;
+  padding: 18px 20px;
+  margin-bottom: 20px;
+  border-left: 5px solid var(--gold);
+  line-height: 1.65;
+  font-size: 0.95em;
+}
+.concept-title {
+  color: var(--gold);
+  font-weight: 800;
+  font-size: 1em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.concept strong { color: var(--gold); }
+.concept em { color: #98D8AA; font-style: normal; font-weight: 700; }
+.concept code {
+  background: rgba(255,255,255,0.12);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9em;
+  color: var(--gold);
+}
+
+/* Before / After viewer */
+.ba-viewer {
+  margin-bottom: 22px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid var(--cream2);
+  box-shadow: 0 4px 18px rgba(27,42,74,0.1);
+}
+.ba-controls { display: flex; background: var(--cream2); }
+.ba-btn {
+  flex: 1;
+  padding: 11px 18px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.9em;
+  transition: background 0.15s, color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.ba-btn.avant { background: white; color: var(--red); }
+.ba-btn.avant.active { background: var(--red); color: white; }
+.ba-btn.apres { background: white; color: var(--green); border-left: 2px solid var(--cream2); }
+.ba-btn.apres.active { background: var(--green); color: white; }
+
+.ba-frame { display: none; background: white; }
+.ba-frame.active { display: block; }
+.ba-frame iframe { width: 100%; height: 300px; border: none; display: block; }
+
+/* Task */
+.task {
+  background: #FFFBEC;
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+.task h3 {
+  color: var(--terra);
+  margin-bottom: 10px;
+  font-size: 1.05em;
+  display: flex; align-items: center; gap: 7px;
+}
+.task p.goal { color: #555; font-size: 0.9em; margin-bottom: 10px; line-height: 1.55; }
+.task ul { padding-left: 18px; line-height: 1.85; font-size: 0.92em; }
+.task ul li { margin-bottom: 3px; }
+.task code {
+  background: var(--cream2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.88em;
+  color: var(--terra);
+}
+
+/* Guide */
+.guide { border-radius: 12px; overflow: hidden; border: 2px solid var(--terra); }
+.guide-hdr {
+  background: var(--terra);
+  color: white;
+  padding: 13px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.95em;
+  user-select: none;
+}
+.guide-hdr:hover { background: #B56A35; }
+.guide-arrow { transition: transform 0.3s; font-style: normal; }
+.guide-arrow.open { transform: rotate(180deg); }
+.guide-body { background: white; padding: 20px; display: none; }
+.guide-body.open { display: block; }
+
+.step { display: flex; gap: 14px; margin-bottom: 22px; align-items: flex-start; }
+.step:last-child { margin-bottom: 0; }
+.step-circle {
+  width: 33px; height: 33px;
+  border-radius: 50%;
+  background: var(--terra);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.95em;
+  flex-shrink: 0;
+}
+.step-body h4 { color: var(--navy); margin-bottom: 5px; font-size: 0.98em; }
+.step-body p { color: #555; font-size: 0.88em; line-height: 1.6; margin-bottom: 10px; }
+.step-body code {
+  background: var(--cream2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.88em;
+  color: var(--terra);
+}
+
+.code-block {
+  background: #0D1117;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.82em;
+  line-height: 1.75;
+  overflow-x: auto;
+  color: #E6EDF3;
+  white-space: pre;
+  border-left: 3px solid var(--terra);
+}
+.c-comment { color: #6E7681; font-style: italic; }
+.c-prop    { color: #79C0FF; }
+.c-val     { color: #A5D6FF; }
+.c-sel     { color: #FF7B72; }
+.c-tag     { color: #7EE787; }
+.c-str     { color: #FFA657; }
+.c-arrow   { color: var(--gold); }
+
+/* No guide */
+.no-guide {
+  background: linear-gradient(135deg, #F4F0FF 0%, #E8F0FF 100%);
+  border: 2px dashed var(--purple);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  color: var(--purple);
+}
+.no-guide .challenge-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.25em;
+  margin-bottom: 10px;
+}
+.no-guide .challenge-sub { color: #666; font-size: 0.9em; margin-bottom: 14px; line-height: 1.55; }
+.hints-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 12px; }
+.hint-chip {
+  background: white;
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.82em;
+  font-family: 'Fira Code', monospace;
+}
+
+/* Ornament */
+.ornament {
+  text-align: center;
+  color: var(--gold);
+  letter-spacing: 8px;
+  font-size: 1.2em;
+  margin: 22px 0 18px;
+  opacity: 0.6;
+}
+
+/* Footer */
+.footer {
+  background: var(--navy);
+  color: var(--cream2);
+  text-align: center;
+  padding: 24px 20px;
+  font-size: 0.88em;
+}
+.footer strong { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <span class="header-flag">🇲🇦</span>
+  <h1>FC Atlas Academy — CSS</h1>
+  <div class="gold-bar"></div>
+  <p class="sub">Cours 3 · Block, Inline &amp; Position · 5 exercices progressifs</p>
+</header>
+
+<!-- NAV TABS -->
+<nav class="ex-nav" id="exNav"></nav>
+
+<!-- EXERCISE PAGES -->
+<main id="exPages"></main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <p>🇲🇦 <strong>FC Atlas Academy</strong> · Cours HTML/CSS · Collège</p>
+  <p style="margin-top:5px;opacity:0.6;font-size:0.85em;">Chaque ligne de code = un pas vers la victoire. 🏆</p>
+</footer>
+
+<script>
+/* =====================================================
+   SHARED CSS injected into every iframe
+===================================================== */
+const SC = `
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Trebuchet MS','Segoe UI',Arial,sans-serif;
+    background:#FEF0DC;
+    padding:16px;
+    color:#1B2A4A;
+    min-height:100vh;
+    font-size:14px;
+    line-height:1.4;
+  }
+  .carte{
+    background:white;
+    border:2px solid #D4AF37;
+    border-radius:12px;
+    padding:18px;
+    margin:8px 0;
+    box-shadow:3px 3px 0 #C87941;
+    position:relative;
+  }
+  .joueur{
+    background:#D4AF37;
+    color:#1B2A4A;
+    padding:5px 14px;
+    border-radius:20px;
+    font-weight:800;
+    font-size:13px;
+  }
+  .stat{
+    background:#1B2A4A;
+    color:#D4AF37;
+    padding:10px 12px;
+    border-radius:8px;
+    text-align:center;
+    font-weight:700;
+  }
+  .stat .val{font-size:22px;display:block;margin-top:4px}
+  .stat .lbl{font-size:10px;text-transform:uppercase;letter-spacing:1px;opacity:0.7}
+  h2{color:#C87941;margin:0 0 12px;font-size:1.2em}
+  h3{color:#1B2A4A;margin:0 0 8px;font-size:1em}
+  p{color:#666;margin:0 0 10px;font-size:13px}
+  .note{
+    padding:7px 12px;border-radius:6px;
+    font-size:12px;font-weight:700;margin-top:10px;
+    display:flex;align-items:center;gap:6px;
+  }
+  .error {background:#FDECEA;color:#A93226;border-left:3px solid #A93226}
+  .success{background:#EAFAF1;color:#1E8449;border-left:3px solid #1E8449}
+  .badge-feu{
+    background:#E74C3C;color:white;
+    padding:4px 12px;border-radius:20px;
+    font-weight:800;font-size:12px;display:inline-block;
+  }
+  .mini-stat{
+    background:#1B2A4A;color:#D4AF37;
+    padding:8px;border-radius:6px;
+    text-align:center;font-weight:900;
+  }
+`;
+
+/* =====================================================
+   EXERCISE DATA
+===================================================== */
+const EX = [
+
+  /* ── EX 1 ──────────────────────────────────────── */
+  {
+    id: 1, emoji: '🧱',
+    title: 'Block vs Inline',
+    difficulty: '⭐ Facile', dur: '5 min',
+    tags: ['Débutant'],
+    tagStyle: 'green',
+    hasGuide: true,
+    concept: `
+      <div class="concept-title">🎮 L'analogie Minecraft</div>
+      Un élément <strong>block</strong> = comme un bloc dans Minecraft : il prend <em>toute la largeur</em> de la ligne, la ligne suivante commence en dessous.<br><br>
+      Un élément <strong>inline</strong> = comme ton pseudo dans le chat du jeu : il reste <em>sur la même ligne</em> que ce qui est autour.<br><br>
+      Par défaut : <code>&lt;div&gt;</code> = block · <code>&lt;span&gt;</code> = inline
+    `,
+    goal: 'Les noms des joueurs sont dans des &lt;span&gt; (inline). Ils apparaissent tous collés sur la même ligne. Tu dois faire en sorte que chaque joueur soit sur sa propre ligne.',
+    tasks: [
+      'Trouve la règle CSS pour <code>.joueur</code>',
+      'Ajoute la propriété <code>display: block;</code>',
+      'Ajoute aussi <code>margin: 5px 0;</code> pour espacer',
+    ],
+
+    beforeHTML: `<!DOCTYPE html><html><head><style>${SC}</style></head><body>
+<div class="carte">
+  <h2>Lions de l'Atlas FC</h2>
+  <p>Composition de l'equipe :</p>
+  <span class="joueur">Bono</span>
+  <span class="joueur">Hakimi</span>
+  <span class="joueur">Mazraoui</span>
+  <span class="joueur">En-Nesyri</span>
+  <span class="joueur">Ziyech</span>
+  <div class="note error">Probleme : tous les joueurs sont colles !</div>
+</div>
+</body></html>`,
+
+    afterHTML: `<!DOCTYPE html><html><head><style>${SC}
+.joueur {
+  display: block;
+  margin: 5px 0;
+}
+</style></head><body>
+<div class="carte">
+  <h2>Lions de l'Atlas FC</h2>
+  <p>Composition de l'equipe :</p>
+  <span class="joueur">Bono</span>
+  <span class="joueur">Hakimi</span>
+  <span class="joueur">Mazraoui</span>
+  <span class="joueur">En-Nesyri</span>
+  <span class="joueur">Ziyech</span>
+  <div class="note success">Chaque joueur sur sa propre ligne !</div>
+</div>
+</body></html>`,
+
+    steps: [
+      {
+        title: '👀 Observe le problème',
+        text: 'Clique sur "AVANT". Les <code>&lt;span&gt;</code> sont <strong>inline</strong> par défaut — ils s\'enchaînent sur la même ligne comme les mots dans une phrase.',
+        code:
+`<span class="joueur">Bono</span>
+<span class="joueur">Hakimi</span>
+<span class="joueur">Mazraoui</span>
+<span class="joueur">En-Nesyri</span>
+<span class="joueur">Ziyech</span>
+<span class="c-comment">→ Resultat : tout colle sur une seule ligne</span>`,
+      },
+      {
+        title: '🔧 Trouve le CSS à modifier',
+        text: 'Dans ton fichier CSS, tu as une règle <code>.joueur { ... }</code>. C\'est là qu\'on va agir. La propriété qui contrôle le comportement s\'appelle <code>display</code>.',
+        code:
+`<span class="c-sel">.joueur</span> {
+  background: #D4AF37;
+  <span class="c-comment">/* A TOI D'AJOUTER ICI */</span>
+}`,
+      },
+      {
+        title: '✨ Ajoute display: block',
+        text: '<code>display: block</code> force l\'élément à prendre toute la largeur → nouvelle ligne automatique !',
+        code:
+`<span class="c-sel">.joueur</span> {
+  background: #D4AF37;
+  <span class="c-prop">display</span>: <span class="c-val">block</span>;   <span class="c-comment">/* chaque joueur = sa propre ligne */</span>
+  <span class="c-prop">margin</span>: <span class="c-val">5px 0</span>;    <span class="c-comment">/* petit espace haut/bas */</span>
+}`,
+      },
+      {
+        title: '🏆 Vérifie le résultat',
+        text: 'Sauvegarde (Ctrl+S) et actualise ton navigateur. Compare avec l\'onglet APRÈS ci-dessus. C\'est bon ?',
+        code: null,
+      },
+    ],
+  },
+
+  /* ── EX 2 ──────────────────────────────────────── */
+  {
+    id: 2, emoji: '🃏',
+    title: 'Inline-block : côte à côte',
+    difficulty: '⭐⭐ Moyen', dur: '7 min',
+    tags: ['Intermédiaire'],
+    tagStyle: 'gold',
+    hasGuide: true,
+    concept: `
+      <div class="concept-title">🎮 L'analogie FIFA Ultimate Team</div>
+      Tu connais les <strong>cartes de joueurs dans FIFA</strong> ? Elles sont <em>côte à côte</em>, pas l'une sur l'autre.<br><br>
+      <strong>inline-block</strong> = le meilleur des deux mondes :<br>
+      • Reste <em>sur la même ligne</em> que ses voisins (comme inline)<br>
+      • Accepte une <em>taille et des marges</em> (comme block)<br><br>
+      C'est grâce à <code>display: inline-block</code> que les cartes FIFA s'affichent côte à côte !
+    `,
+    goal: 'Les boîtes de stats sont des &lt;div&gt; (block par défaut). Elles s\'empilent les unes sur les autres. Tu dois les mettre côte à côte comme des cartes FIFA.',
+    tasks: [
+      'Trouve la règle CSS pour <code>.stat</code>',
+      'Ajoute <code>display: inline-block;</code>',
+      'Ajoute <code>width: 22%;</code> pour la largeur de chaque boîte',
+      'Ajoute <code>vertical-align: top;</code> pour aligner en haut',
+    ],
+
+    beforeHTML: `<!DOCTYPE html><html><head><style>${SC}</style></head><body>
+<div class="carte">
+  <h2>Stats — Achraf Hakimi</h2>
+  <div class="stat" style="margin:5px 0;">
+    <span class="lbl">Buts</span>
+    <span class="val">5</span>
+  </div>
+  <div class="stat" style="margin:5px 0;">
+    <span class="lbl">Passes</span>
+    <span class="val">12</span>
+  </div>
+  <div class="stat" style="margin:5px 0;">
+    <span class="lbl">Vitesse</span>
+    <span class="val">96</span>
+  </div>
+  <div class="stat" style="margin:5px 0;">
+    <span class="lbl">Tacles</span>
+    <span class="val">24</span>
+  </div>
+  <div class="note error">Les stats s'empilent comme des divs block</div>
+</div>
+</body></html>`,
+
+    afterHTML: `<!DOCTYPE html><html><head><style>${SC}
+.stat {
+  display: inline-block;
+  width: 22%;
+  margin: 4px 1%;
+  vertical-align: top;
+}
+</style></head><body>
+<div class="carte">
+  <h2>Stats — Achraf Hakimi</h2>
+  <div class="stat">
+    <span class="lbl">Buts</span>
+    <span class="val">5</span>
+  </div>
+  <div class="stat">
+    <span class="lbl">Passes</span>
+    <span class="val">12</span>
+  </div>
+  <div class="stat">
+    <span class="lbl">Vitesse</span>
+    <span class="val">96</span>
+  </div>
+  <div class="stat">
+    <span class="lbl">Tacles</span>
+    <span class="val">24</span>
+  </div>
+  <div class="note success">Cartes cote a cote comme dans FIFA !</div>
+</div>
+</body></html>`,
+
+    steps: [
+      {
+        title: '👀 Comprends pourquoi ça s\'empile',
+        text: 'Les <code>&lt;div&gt;</code> sont <strong>block</strong> par défaut. Block = toute la largeur = impossible d\'être côte à côte. C\'est le problème.',
+        code:
+`<span class="c-sel">.stat</span> {
+  <span class="c-comment">/* Par defaut : display: block */</span>
+  <span class="c-comment">/* → prend 100% de largeur */</span>
+  <span class="c-comment">/* → les divs s'empilent */</span>
+}`,
+      },
+      {
+        title: '🔧 Passe en inline-block',
+        text: '<code>display: inline-block</code> permet aux boîtes d\'être côte à côte. Mais sans largeur fixée, chaque boîte prend juste la place de son contenu.',
+        code:
+`<span class="c-sel">.stat</span> {
+  <span class="c-prop">display</span>: <span class="c-val">inline-block</span>; <span class="c-comment">/* 1ere etape !</span>
+}`,
+      },
+      {
+        title: '📐 Ajoute une largeur et des marges',
+        text: 'Avec <code>width: 22%</code>, chaque boîte fait 22% de largeur. 4 boîtes × 22% = 88% → elles tiennent sur une ligne avec de la place !',
+        code:
+`<span class="c-sel">.stat</span> {
+  <span class="c-prop">display</span>: <span class="c-val">inline-block</span>;
+  <span class="c-prop">width</span>: <span class="c-val">22%</span>;      <span class="c-comment">/* largeur de chaque boite */</span>
+  <span class="c-prop">margin</span>: <span class="c-val">4px 1%</span>;  <span class="c-comment">/* 1% d'espace de chaque cote */</span>
+}`,
+      },
+      {
+        title: '📏 Aligne en haut avec vertical-align',
+        text: 'Par défaut, les éléments inline-block s\'alignent en <strong>bas</strong>. Ajoute <code>vertical-align: top</code> pour qu\'ils commencent tous à la même hauteur.',
+        code:
+`<span class="c-sel">.stat</span> {
+  <span class="c-prop">display</span>: <span class="c-val">inline-block</span>;
+  <span class="c-prop">width</span>: <span class="c-val">22%</span>;
+  <span class="c-prop">margin</span>: <span class="c-val">4px 1%</span>;
+  <span class="c-prop">vertical-align</span>: <span class="c-val">top</span>; <span class="c-comment">/* alignement en haut */</span>
+}`,
+      },
+    ],
+  },
+
+  /* ── EX 3 ──────────────────────────────────────── */
+  {
+    id: 3, emoji: '📍',
+    title: 'Position Relative',
+    difficulty: '⭐⭐⭐ Intermédiaire', dur: '8 min',
+    tags: ['Intermédiaire'],
+    tagStyle: 'terra',
+    hasGuide: true,
+    concept: `
+      <div class="concept-title">🏫 L'analogie de la classe</div>
+      Imagine que tu es assis à ta place en classe. Ça c'est ta position <strong>static</strong> (la position normale, par défaut).<br><br>
+      Avec <strong>position: relative</strong>, tu te lèves et tu te déplaces — <em>mais ta chaise reste là où elle était</em>. Tu te déplaces par rapport à <em>ta position d'origine</em>.<br><br>
+      On contrôle le déplacement avec : <code>top</code> · <code>bottom</code> · <code>left</code> · <code>right</code>
+    `,
+    goal: 'Le badge "En Forme" apparaît après le texte (position normale). Tu dois le déplacer en haut à droite de la carte avec position: relative.',
+    tasks: [
+      'Ajoute <code>position: relative;</code> à la règle <code>.badge-feu</code>',
+      'Ajoute <code>top: -80px;</code> pour remonter le badge',
+      'Ajoute <code>left: 200px;</code> pour le décaler à droite',
+      'Expérimente avec d\'autres valeurs pour comprendre !',
+    ],
+
+    beforeHTML: `<!DOCTYPE html><html><head><style>${SC}</style></head><body>
+<div class="carte">
+  <h2>Yassine Bounou</h2>
+  <p>Gardien de but | Club : Al-Qadsiah</p>
+  <p>Saison en cours : 3 clean sheets sur 5 matchs</p>
+  <span class="badge-feu">En Forme</span>
+  <div class="note error">Le badge est apres le texte, pas au bon endroit</div>
+</div>
+</body></html>`,
+
+    afterHTML: `<!DOCTYPE html><html><head><style>${SC}
+.badge-feu {
+  position: relative;
+  top: -80px;
+  left: 200px;
+}
+</style></head><body>
+<div class="carte">
+  <h2>Yassine Bounou</h2>
+  <p>Gardien de but | Club : Al-Qadsiah</p>
+  <p>Saison en cours : 3 clean sheets sur 5 matchs</p>
+  <span class="badge-feu">En Forme</span>
+  <div class="note success">Le badge est remonte en haut a droite !</div>
+</div>
+</body></html>`,
+
+    steps: [
+      {
+        title: '👀 La position par défaut : static',
+        text: 'Par défaut, tous les éléments sont en <code>position: static</code>. Ils suivent le flux normal : l\'un après l\'autre. Les propriétés <code>top</code>/<code>left</code> ne font <strong>rien du tout</strong> avec static.',
+        code:
+`<span class="c-sel">.badge-feu</span> {
+  <span class="c-comment">/* position: static par defaut */</span>
+  <span class="c-comment">/* top / left : completement ignores */</span>
+}`,
+      },
+      {
+        title: '🔧 Active position: relative',
+        text: 'Dès que tu écris <code>position: relative</code>, les propriétés <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code> fonctionnent. Elles déplacent l\'élément depuis sa position d\'origine.',
+        code:
+`<span class="c-sel">.badge-feu</span> {
+  <span class="c-prop">position</span>: <span class="c-val">relative</span>; <span class="c-comment">/* active le deplacement */</span>
+  <span class="c-comment">/* maintenant top/left fonctionnent ! */</span>
+}`,
+      },
+      {
+        title: '⬆️ Remonte avec top',
+        text: '<code>top: -80px</code> = remonte de 80 pixels depuis sa position normale. Valeur négative = vers le haut. Valeur positive = vers le bas.',
+        code:
+`<span class="c-sel">.badge-feu</span> {
+  <span class="c-prop">position</span>: <span class="c-val">relative</span>;
+  <span class="c-prop">top</span>: <span class="c-val">-80px</span>; <span class="c-comment">/* remonte de 80px vers le haut */</span>
+  <span class="c-comment">/* top: 20px  → descend de 20px */</span>
+  <span class="c-comment">/* top: -20px → monte de 20px  */</span>
+}`,
+      },
+      {
+        title: '➡️ Décale avec left',
+        text: '<code>left: 200px</code> = se décale de 200px vers la droite. Valeur positive = vers la droite. Valeur négative = vers la gauche.',
+        code:
+`<span class="c-sel">.badge-feu</span> {
+  <span class="c-prop">position</span>: <span class="c-val">relative</span>;
+  <span class="c-prop">top</span>: <span class="c-val">-80px</span>;
+  <span class="c-prop">left</span>: <span class="c-val">200px</span>; <span class="c-comment">/* 200px vers la droite */</span>
+  <span class="c-comment">/* Essaie d'autres valeurs ! */</span>
+}`,
+      },
+    ],
+  },
+
+  /* ── EX 4 ──────────────────────────────────────── */
+  {
+    id: 4, emoji: '⚽',
+    title: 'Carte Joueur FIFA',
+    difficulty: '⭐⭐⭐⭐ Avancé', dur: '10 min',
+    tags: ['Avancé', 'Sans guide'],
+    tagStyle: 'purple',
+    hasGuide: false,
+    concept: `
+      <div class="concept-title">🎮 Mission : Reproduis la carte FIFA</div>
+      Tu dois <em>combiner tout ce que tu as appris</em> pour construire une carte de joueur style FIFA :<br><br>
+      • Les informations (nom, poste) en <strong>block</strong> → chacune sur sa ligne<br>
+      • Les stats en <strong>inline-block</strong> → côte à côte<br>
+      • Le numéro de rating en <strong>position relative</strong> → dans un coin<br><br>
+      Le HTML est fourni, <em>c'est le CSS que tu dois compléter</em> !
+    `,
+    goal: 'Reproduis la carte montrée dans l\'onglet APRÈS. Lis le HTML pour comprendre la structure, puis complète les règles CSS marquées "À TOI".',
+    tasks: [
+      'Mets <code>.info-ligne</code> en <code>display: block</code>',
+      'Mets <code>.mini-stat</code> en <code>display: inline-block</code> avec <code>width: 30%</code>',
+      'Positionne <code>.rating</code> avec <code>position: relative</code>, <code>top</code> et <code>left</code>',
+    ],
+    hints: ['display: block', 'display: inline-block', 'width: 30%', 'vertical-align: top', 'position: relative', 'top: -10px', 'left: 180px'],
+
+    beforeHTML: `<!DOCTYPE html><html><head><style>${SC}
+/* A TOI DE COMPLETER ! */
+
+.info-ligne {
+  /* display: ???; */
+  margin: 3px 0;
+}
+
+.mini-stat {
+  background: #1B2A4A;
+  color: #D4AF37;
+  padding: 8px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 1.1em;
+  /* display: ???; */
+  /* width: ???; */
+  /* margin: ???; */
+  /* vertical-align: ???; */
+}
+
+.rating {
+  background: #D4AF37;
+  color: #1B2A4A;
+  font-weight: 900;
+  font-size: 2em;
+  padding: 8px 14px;
+  border-radius: 8px;
+  display: inline-block;
+  /* position: ???; */
+  /* top: ???; */
+  /* left: ???; */
+}
+</style></head><body>
+<div class="carte" style="min-height:150px;">
+  <span class="rating">89</span>
+  <span class="info-ligne" style="font-size:1.4em;font-weight:900;color:#C87941;">HAKIMI</span>
+  <span class="info-ligne" style="color:#888;font-size:0.9em;">Lateral Droit | PSG</span>
+  <div style="margin:12px 0;">
+    <div class="mini-stat"><span style="font-size:9px;display:block;opacity:0.7;">BUTS</span>5</div>
+    <div class="mini-stat"><span style="font-size:9px;display:block;opacity:0.7;">PASSES</span>12</div>
+    <div class="mini-stat"><span style="font-size:9px;display:block;opacity:0.7;">VITESSE</span>96</div>
+  </div>
+</div>
+</body></html>`,
+
+    afterHTML: `<!DOCTYPE html><html><head><style>${SC}
+.info-ligne {
+  display: block;
+  margin: 3px 0;
+}
+.mini-stat {
+  background: #1B2A4A;
+  color: #D4AF37;
+  padding: 8px 6px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 1.1em;
+  display: inline-block;
+  width: 30%;
+  margin: 0 1%;
+  vertical-align: top;
+}
+.rating {
+  background: #D4AF37;
+  color: #1B2A4A;
+  font-weight: 900;
+  font-size: 2em;
+  padding: 8px 14px;
+  border-radius: 8px;
+  display: inline-block;
+  position: relative;
+  top: -10px;
+  left: 180px;
+}
+</style></head><body>
+<div class="carte" style="min-height:150px;">
+  <span class="rating">89</span>
+  <span class="info-ligne" style="font-size:1.4em;font-weight:900;color:#C87941;">HAKIMI</span>
+  <span class="info-ligne" style="color:#888;font-size:0.9em;">Lateral Droit | PSG</span>
+  <div style="margin:12px 0;">
+    <div class="mini-stat"><span style="font-size:9px;display:block;opacity:0.7;">BUTS</span>5</div>
+    <div class="mini-stat"><span style="font-size:9px;display:block;opacity:0.7;">PASSES</span>12</div>
+    <div class="mini-stat"><span style="font-size:9px;display:block;opacity:0.7;">VITESSE</span>96</div>
+  </div>
+  <div class="note success">Carte FIFA reussie !</div>
+</div>
+</body></html>`,
+  },
+
+  /* ── EX 5 ──────────────────────────────────────── */
+  {
+    id: 5, emoji: '🏟',
+    title: 'Page du Club — Boss Final',
+    difficulty: '⭐⭐⭐⭐⭐ Expert', dur: '10 min',
+    tags: ['Expert', 'Sans guide', 'Projet final'],
+    tagStyle: 'purple',
+    hasGuide: false,
+    concept: `
+      <div class="concept-title">🏆 Mission Finale — La page du FC Atlas</div>
+      Tu vas assembler <em>toute la page du club</em>. C'est le <strong>boss final</strong> — mais tu as toutes les armes !<br><br>
+      Tu dois utiliser <strong>block</strong>, <strong>inline-block</strong> et <strong>position: relative</strong> pour construire un vrai header de club avec logo, nom, badge et barre de navigation.
+    `,
+    goal: 'Complète toutes les règles CSS commentées "À TOI" pour reproduire la page montrée dans l\'onglet APRÈS.',
+    tasks: [
+      'Logo + nom du club côte à côte → <code>inline-block</code> + <code>vertical-align: middle</code>',
+      'Liens de navigation côte à côte → <code>inline-block</code>',
+      'Badge "Champions" décalé vers le haut → <code>position: relative</code> + <code>top</code>',
+      'Titre de section sur toute la ligne → <code>display: block</code>',
+    ],
+    hints: ['display: inline-block', 'vertical-align: middle', 'display: block', 'position: relative', 'top: -16px', 'margin-left: 10px'],
+
+    beforeHTML: `<!DOCTYPE html><html><head><style>${SC}
+.hdr{background:#1B2A4A;padding:20px;border-radius:12px;margin-bottom:16px;}
+.logo{font-size:2.5em;}
+.club-name{
+  color:#D4AF37;font-size:1.3em;font-weight:900;
+  /* display: ???; */
+  /* vertical-align: ???; */
+  /* margin-left: ???; */
+}
+.badge-champ{
+  background:#D4AF37;color:#1B2A4A;
+  padding:4px 12px;border-radius:20px;
+  font-weight:800;font-size:11px;
+  /* position: ???; */
+  /* top: ???; */
+}
+.nav-lien{
+  color:white;
+  background:rgba(255,255,255,0.1);
+  padding:8px 14px;border-radius:6px;
+  margin:3px;cursor:pointer;font-weight:700;
+  /* display: ???; */
+}
+.section-title{
+  color:#C87941;font-size:1.15em;font-weight:900;
+  border-bottom:2px solid #D4AF37;
+  padding-bottom:8px;margin-bottom:12px;
+  /* display: ???; */
+}
+</style></head><body>
+<div class="hdr">
+  <span class="logo">🦁</span>
+  <span class="club-name">FC Lions de l'Atlas</span>
+  <span class="badge-champ">Champions</span>
+  <div style="margin-top:12px;">
+    <span class="nav-lien">Accueil</span>
+    <span class="nav-lien">Joueurs</span>
+    <span class="nav-lien">Matchs</span>
+    <span class="nav-lien">Palmares</span>
+  </div>
+</div>
+<span class="section-title">Nos Joueurs Vedettes</span>
+<div class="carte">
+  <p>Bono — Hakimi — Mazraoui — En-Nesyri — Ziyech</p>
+</div>
+</body></html>`,
+
+    afterHTML: `<!DOCTYPE html><html><head><style>${SC}
+.hdr{background:#1B2A4A;padding:20px;border-radius:12px;margin-bottom:16px;}
+.logo{font-size:2.5em;display:inline-block;vertical-align:middle;}
+.club-name{
+  color:#D4AF37;font-size:1.3em;font-weight:900;
+  display:inline-block;
+  vertical-align:middle;
+  margin-left:10px;
+}
+.badge-champ{
+  background:#D4AF37;color:#1B2A4A;
+  padding:4px 12px;border-radius:20px;
+  font-weight:800;font-size:11px;
+  position:relative;
+  top:-16px;
+}
+.nav-lien{
+  color:white;
+  background:rgba(255,255,255,0.1);
+  padding:8px 14px;border-radius:6px;
+  margin:3px;cursor:pointer;font-weight:700;
+  display:inline-block;
+}
+.section-title{
+  color:#C87941;font-size:1.15em;font-weight:900;
+  border-bottom:2px solid #D4AF37;
+  padding-bottom:8px;margin-bottom:12px;
+  display:block;
+}
+</style></head><body>
+<div class="hdr">
+  <span class="logo">🦁</span>
+  <span class="club-name">FC Lions de l'Atlas</span>
+  <span class="badge-champ">Champions</span>
+  <div style="margin-top:12px;">
+    <span class="nav-lien">Accueil</span>
+    <span class="nav-lien">Joueurs</span>
+    <span class="nav-lien">Matchs</span>
+    <span class="nav-lien">Palmares</span>
+  </div>
+</div>
+<span class="section-title">Nos Joueurs Vedettes</span>
+<div class="carte">
+  <p>Bono — Hakimi — Mazraoui — En-Nesyri — Ziyech</p>
+</div>
+</body></html>`,
+  },
+];
+
+/* =====================================================
+   BUILD UI
+===================================================== */
+function makeNav() {
+  const nav = document.getElementById('exNav');
+  EX.forEach((ex, i) => {
+    const b = document.createElement('button');
+    b.className = 'ex-btn' + (i === 0 ? ' active' : '');
+    b.dataset.id = ex.id;
+    b.innerHTML = `<span class="ex-num">${ex.id}</span>${ex.emoji} ${ex.title}`;
+    b.onclick = () => switchEx(ex.id);
+    nav.appendChild(b);
+  });
+}
+
+function makePages() {
+  const main = document.getElementById('exPages');
+  EX.forEach((ex, i) => {
+    const page = document.createElement('section');
+    page.className = 'ex-page' + (i === 0 ? ' active' : '');
+    page.id = 'ex' + ex.id;
+
+    page.innerHTML = `
+      <div class="ex-top">
+        <div class="ex-icon">${ex.emoji}</div>
+        <div class="ex-info">
+          <h2>Exercice ${ex.id} — ${ex.title}</h2>
+          <div class="tag-row">
+            <span class="tag ${ex.tagStyle}">${ex.difficulty}</span>
+            <span class="tag navy">⏱ ${ex.dur}</span>
+            ${ex.tags.map(t => `<span class="tag navy">${t}</span>`).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="concept">${ex.concept}</div>
+
+      <div class="ba-viewer" id="bav${ex.id}">
+        <div class="ba-controls">
+          <button class="ba-btn avant active" onclick="switchBA(${ex.id},'avant',this)">
+            ❌ AVANT — le problème
+          </button>
+          <button class="ba-btn apres" onclick="switchBA(${ex.id},'apres',this)">
+            ✅ APRÈS — la solution
+          </button>
+        </div>
+        <div class="ba-frame active" id="bf-avant-${ex.id}"></div>
+        <div class="ba-frame"        id="bf-apres-${ex.id}"></div>
+      </div>
+
+      <div class="task">
+        <h3>🎯 Ta mission</h3>
+        <p class="goal">${ex.goal}</p>
+        <ul>${ex.tasks.map(t => `<li>${t}</li>`).join('')}</ul>
+      </div>
+
+      <div class="ornament">✦ &nbsp;✦ &nbsp;✦</div>
+
+      ${ex.hasGuide ? makeGuide(ex) : makeNoGuide(ex)}
+    `;
+
+    main.appendChild(page);
+
+    makeFrame(`bf-avant-${ex.id}`, ex.beforeHTML);
+    makeFrame(`bf-apres-${ex.id}`, ex.afterHTML);
+  });
+}
+
+function makeFrame(id, html) {
+  const wrap = document.getElementById(id);
+  const blob = new Blob([html], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const ifr  = document.createElement('iframe');
+  ifr.src = url;
+  ifr.style.cssText = 'width:100%;height:300px;border:none;display:block;';
+  wrap.appendChild(ifr);
+}
+
+function makeGuide(ex) {
+  const stepsHtml = ex.steps.map((s, i) => `
+    <div class="step">
+      <div class="step-circle">${i + 1}</div>
+      <div class="step-body">
+        <h4>${s.title}</h4>
+        <p>${s.text}</p>
+        ${s.code ? `<div class="code-block">${s.code}</div>` : ''}
+      </div>
+    </div>
+  `).join('');
+
+  return `
+    <div class="guide">
+      <div class="guide-hdr" onclick="toggleGuide(this)">
+        📖 Guide pas à pas — clique pour afficher / cacher
+        <em class="guide-arrow">▼</em>
+      </div>
+      <div class="guide-body">${stepsHtml}</div>
+    </div>
+  `;
+}
+
+function makeNoGuide(ex) {
+  const hints = ex.hints
+    ? ex.hints.map(h => `<span class="hint-chip">${h}</span>`).join('')
+    : '';
+  return `
+    <div class="no-guide">
+      <div class="challenge-title">🧠 Défi libre — pas de guide !</div>
+      <p class="challenge-sub">
+        Tu as toutes les clés depuis les exercices précédents.<br>
+        Écris le CSS toi-même, puis vérifie avec l'onglet APRÈS.
+      </p>
+      <p style="color:#888;font-size:0.85em;margin-bottom:8px;">Bloqué(e) ? Des mots-clés pour t'aider :</p>
+      <div class="hints-row">${hints}</div>
+    </div>
+  `;
+}
+
+/* =====================================================
+   INTERACTIONS
+===================================================== */
+function switchEx(id) {
+  document.querySelectorAll('.ex-btn')
+    .forEach(b => b.classList.toggle('active', parseInt(b.dataset.id) === id));
+  document.querySelectorAll('.ex-page')
+    .forEach(p => p.classList.toggle('active', p.id === 'ex' + id));
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function switchBA(exId, mode, btn) {
+  const viewer = document.getElementById('bav' + exId);
+  viewer.querySelectorAll('.ba-btn')  .forEach(b => b.classList.remove('active'));
+  viewer.querySelectorAll('.ba-frame').forEach(f => f.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('bf-' + mode + '-' + exId).classList.add('active');
+}
+
+function toggleGuide(hdr) {
+  const body  = hdr.nextElementSibling;
+  const arrow = hdr.querySelector('.guide-arrow');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+}
+
+/* INIT */
+makeNav();
+makePages();
+</script>
+</body>
+</html>
