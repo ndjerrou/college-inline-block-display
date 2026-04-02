@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 1 — Block vs Inline ⭐</title>
+  <style>
+
+    /* ============================================
+       CSS DÉCORATIF — déjà fait pour toi, ne touche pas !
+       ============================================ */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1B2A4A;
+      color: #FEF0DC;
+      padding: 30px;
+      margin: 0;
+    }
+    h1 {
+      color: #D4AF37;
+      border-bottom: 2px solid #D4AF37;
+      padding-bottom: 10px;
+    }
+    h2 { color: #C87941; }
+
+    .encadre {
+      background: #FEF0DC;
+      color: #1B2A4A;
+      border-radius: 10px;
+      padding: 20px 25px;
+      margin: 20px 0;
+    }
+    .joueur {
+      background: #1B2A4A;
+      color: #D4AF37;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 8px 16px;
+      margin: 4px;
+      border-radius: 6px;
+      border: 2px solid #D4AF37;
+    }
+    .conseil {
+      background: #C87941;
+      color: white;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin-top: 20px;
+      font-size: 15px;
+    }
+    .objectif {
+      background: #D4AF37;
+      color: #1B2A4A;
+      border-radius: 8px;
+      padding: 15px 20px;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 15px 0;
+    }
+    code {
+      background: #0D1117;
+      color: #79C0FF;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+
+    /* ============================================
+       À TOI DE JOUER !
+       Exercice 1 — Block vs Inline
+       ============================================
+
+       PROBLÈME : les noms des joueurs (balises .joueur)
+       sont collés sur la même ligne. C'est parce que
+       <span> est INLINE par défaut.
+
+       TON OBJECTIF : faire que chaque joueur
+       apparaisse sur SA PROPRE LIGNE.
+
+       INDICE : cherche la propriété "display"
+       et la valeur "block".
+
+       ↓ ÉCRIS TON CSS ICI ↓
+       ============================================ */
+
+    .joueur {
+      /* Que se passe-t-il si tu ajoutes : display: block; ? */
+
+    }
+
+    /* ============================================
+       ↑ FIN DE TA ZONE DE CODE ↑
+       ============================================ */
+
+  </style>
+</head>
+<body>
+
+  <h1>⭐ Exercice 1 — Block vs Inline</h1>
+
+  <div class="objectif">
+    🎯 Objectif : Fais apparaître chaque joueur sur sa propre ligne.
+  </div>
+
+  <div class="encadre">
+    <h2>Sélection FC Atlas — Liste des joueurs</h2>
+
+    <!--
+      Ces balises <span> sont INLINE par défaut.
+      Résultat : tous les noms sont collés sur la même ligne !
+      C'est toi qui dois changer ça dans le CSS.
+    -->
+    <span class="joueur">⚽ Achraf Hakimi</span>
+    <span class="joueur">🧤 Yassine Bounou</span>
+    <span class="joueur">⚡ Hakim Ziyech</span>
+    <span class="joueur">🎯 Youssef En-Nesyri</span>
+    <span class="joueur">🛡️ Noussair Mazraoui</span>
+  </div>
+
+  <div class="conseil">
+    💡 <strong>Rappel :</strong>
+    Un élément <code>block</code> prend toute la largeur disponible → nouvelle ligne automatique.<br>
+    Un élément <code>inline</code> reste dans la ligne comme les mots dans une phrase.
+  </div>
+
+  <!-- ============================================
+       GUIDE PAS À PAS (lis seulement si tu bloques)
+
+       Étape 1 : Observe le problème
+         → Tous les joueurs sont collés ? Normal !
+           Les <span> sont inline par défaut.
+
+       Étape 2 : Trouve ce qu'il faut changer
+         → La propriété CSS qui contrôle ça s'appelle : display
+         → Elle est déjà dans le CSS (zone "À toi de jouer")
+
+       Étape 3 : Change la valeur
+         → Écris :  display: block;
+         → Sauvegarde (Ctrl+S) et rafraîchis (F5)
+
+       Étape 4 : Observe le résultat
+         → Chaque joueur est maintenant sur sa propre ligne !
+
+       POURQUOI ÇA MARCHE ?
+         → block force l'élément à prendre TOUTE la largeur
+         → Donc le suivant n'a plus de place → il passe à la ligne
+       ============================================ -->
+
+</body>
+</html>

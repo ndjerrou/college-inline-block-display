@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 2 — Cartes FIFA côte à côte ⭐⭐</title>
+  <style>
+
+    /* ============================================
+       CSS DÉCORATIF — déjà fait pour toi, ne touche pas !
+       ============================================ */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1B2A4A;
+      color: #FEF0DC;
+      padding: 30px;
+      margin: 0;
+    }
+    h1 { color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 10px; }
+    h2 { color: #C87941; }
+
+    .terrain {
+      background: #2d5a27;
+      border-radius: 12px;
+      padding: 25px;
+      margin: 20px 0;
+      border: 3px solid #D4AF37;
+    }
+    .carte {
+      background: linear-gradient(160deg, #C8A951 0%, #8B6914 50%, #C8A951 100%);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 6px;
+      border: 2px solid #FFD700;
+      text-align: center;
+      color: #1B2A4A;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+    .carte .note {
+      font-size: 36px;
+      font-weight: 900;
+      color: #1B2A4A;
+      line-height: 1;
+    }
+    .carte .poste {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+    }
+    .carte .nom {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      border-top: 1px solid rgba(0,0,0,0.3);
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+    .carte .stats {
+      font-size: 11px;
+      margin-top: 8px;
+      color: #2d1a00;
+    }
+    .objectif {
+      background: #D4AF37;
+      color: #1B2A4A;
+      border-radius: 8px;
+      padding: 15px 20px;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 15px 0;
+    }
+    .conseil {
+      background: #C87941;
+      color: white;
+      border-radius: 8px;
+      padding: 15px 20px;
+      margin-top: 20px;
+      font-size: 15px;
+    }
+    code {
+      background: #0D1117;
+      color: #79C0FF;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+
+    /* ============================================
+       À TOI DE JOUER !
+       Exercice 2 — Cartes FIFA côte à côte
+       ============================================
+
+       PROBLÈME : les cartes s'empilent les unes
+       sous les autres. C'est parce que <div> est
+       BLOCK par défaut.
+
+       TON OBJECTIF : afficher les 3 cartes
+       CÔTE À CÔTE comme dans FIFA Ultimate Team.
+
+       INDICES :
+         1. Cherche la valeur "inline-block"
+         2. Donne une largeur fixe à chaque carte
+         3. Aligne-les en haut avec vertical-align
+
+       ↓ ÉCRIS TON CSS ICI ↓
+       ============================================ */
+
+    .carte {
+      /* Étape 1 : change le display pour qu'elles soient côte à côte */
+
+      /* Étape 2 : donne une largeur fixe (essaie 160px) */
+
+      /* Étape 3 : aligne-les en haut (vertical-align: top) */
+
+    }
+
+    /* ============================================
+       ↑ FIN DE TA ZONE DE CODE ↑
+       ============================================ */
+
+  </style>
+</head>
+<body>
+
+  <h1>⭐⭐ Exercice 2 — Cartes FIFA côte à côte</h1>
+
+  <div class="objectif">
+    🎯 Objectif : Affiche les 3 cartes côte à côte comme dans FIFA UT.
+  </div>
+
+  <div class="terrain">
+
+    <!--
+      Ces <div class="carte"> sont BLOCK par défaut.
+      Résultat : elles s'empilent verticalement !
+      À toi de corriger ça dans le CSS.
+    -->
+
+    <div class="carte">
+      <div class="note">87</div>
+      <div class="poste">RB</div>
+      <div class="nom">Hakimi</div>
+      <div class="stats">PAC 96 • DRB 88 • DEF 79</div>
+    </div>
+
+    <div class="carte">
+      <div class="note">85</div>
+      <div class="poste">GK</div>
+      <div class="nom">Bounou</div>
+      <div class="stats">DIV 87 • REF 85 • POS 84</div>
+    </div>
+
+    <div class="carte">
+      <div class="note">84</div>
+      <div class="poste">CAM</div>
+      <div class="nom">Ziyech</div>
+      <div class="stats">PAS 87 • TIR 82 • DRB 85</div>
+    </div>
+
+  </div>
+
+  <div class="conseil">
+    💡 <strong>inline-block</strong> = le meilleur des deux mondes :<br>
+    • Comme <code>inline</code> → les éléments restent côte à côte<br>
+    • Comme <code>block</code> → tu peux définir une largeur et une hauteur
+  </div>
+
+  <!-- ============================================
+       GUIDE PAS À PAS (lis seulement si tu bloques)
+
+       Étape 1 : Change le display
+         → Écris :  display: inline-block;
+         → Les cartes vont se mettre côte à côte !
+         → Mais elles sont peut-être trop larges...
+
+       Étape 2 : Fixe la largeur
+         → Écris :  width: 160px;
+         → Chaque carte fait maintenant 160px de large.
+
+       Étape 3 : Aligne en haut
+         → Tu remarques que les cartes s'alignent en BAS ?
+         → Écris :  vertical-align: top;
+         → Elles s'alignent maintenant toutes en haut !
+
+       POURQUOI vertical-align ?
+         → Par défaut, les éléments inline-block s'alignent
+           sur la ligne de base du texte (comme des lettres).
+         → "top" force l'alignement en haut.
+       ============================================ -->
+
+</body>
+</html>

@@ -340,6 +340,94 @@ body {
   font-size: 0.88em;
 }
 .footer strong { color: var(--gold); }
+
+/* Download button */
+.dl-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--green);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800;
+  font-size: 0.9em;
+  transition: background 0.15s;
+  margin: 10px 0 20px;
+}
+.dl-btn:hover { background: #166a3a; }
+
+/* Cours page */
+.cours-block {
+  background: white;
+  border-radius: 12px;
+  padding: 22px 24px;
+  margin-bottom: 22px;
+  border-left: 5px solid var(--gold);
+}
+.cours-block h3 {
+  color: var(--terra);
+  font-family: 'Cinzel', serif;
+  margin-bottom: 14px;
+  font-size: 1.15em;
+}
+.cours-block p, .cours-block li {
+  color: #444;
+  line-height: 1.7;
+  font-size: 0.95em;
+}
+.cours-block ul { padding-left: 20px; margin: 10px 0; }
+.cours-block code {
+  background: var(--cream2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.88em;
+  color: var(--terra);
+}
+.demo-zone {
+  background: #F7F3EB;
+  border: 2px dashed var(--terra);
+  border-radius: 8px;
+  padding: 16px;
+  margin: 14px 0;
+  position: relative;
+}
+.demo-box {
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 0.9em;
+  margin: 4px 0;
+}
+.demo-label {
+  font-size: 0.8em;
+  color: #888;
+  font-style: italic;
+  margin-top: 8px;
+}
+.cours-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+.cours-table th {
+  background: var(--navy);
+  color: var(--gold);
+  padding: 10px 14px;
+  text-align: left;
+}
+.cours-table th:first-child { border-radius: 8px 0 0 0; }
+.cours-table th:last-child { border-radius: 0 8px 0 0; }
+.cours-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+}
+.cours-table tr:nth-child(even) { background: #FAFAFA; }
+.cours-table tr:nth-child(odd) { background: white; }
 </style>
 </head>
 <body>
@@ -362,6 +450,7 @@ body {
 <footer class="footer">
   <p>🇲🇦 <strong>FC Atlas Academy</strong> · Cours HTML/CSS · Collège</p>
   <p style="margin-top:5px;opacity:0.6;font-size:0.85em;">Chaque ligne de code = un pas vers la victoire. 🏆</p>
+  <p style="margin-top:10px;font-size:0.82em;"><span style="opacity:0.5;">Powered by</span> <a href="https://www.muslimjs.io" target="_blank" style="color:var(--gold);text-decoration:none;font-weight:700;">MuslimJS</a></p>
 </footer>
 
 <script>
@@ -975,6 +1064,15 @@ const EX = [
 ===================================================== */
 function makeNav() {
   const nav = document.getElementById('exNav');
+
+  // Cours tab
+  const cb = document.createElement('button');
+  cb.className = 'ex-btn';
+  cb.dataset.id = 'cours';
+  cb.innerHTML = `<span class="ex-num" style="background:var(--terra);color:white;">📖</span> Cours`;
+  cb.onclick = () => switchEx('cours');
+  nav.appendChild(cb);
+
   EX.forEach((ex, i) => {
     const b = document.createElement('button');
     b.className = 'ex-btn' + (i === 0 ? ' active' : '');
@@ -1026,6 +1124,8 @@ function makePages() {
         <ul>${ex.tasks.map(t => `<li>${t}</li>`).join('')}</ul>
       </div>
 
+      <button onclick="downloadExercice(${ex.id})" class="dl-btn">⬇ Télécharger exercice${ex.id}.html</button>
+
       <div class="ornament">✦ &nbsp;✦ &nbsp;✦</div>
 
       ${ex.hasGuide ? makeGuide(ex) : makeNoGuide(ex)}
@@ -1040,7 +1140,7 @@ function makePages() {
 
 function makeFrame(id, html) {
   const wrap = document.getElementById(id);
-  const blob = new Blob([html], { type: 'text/html' });
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const url  = URL.createObjectURL(blob);
   const ifr  = document.createElement('iframe');
   ifr.src = url;
@@ -1089,13 +1189,301 @@ function makeNoGuide(ex) {
 }
 
 /* =====================================================
+   COURS PAGE
+===================================================== */
+function makeCoursPage() {
+  const main = document.getElementById('exPages');
+  const page = document.createElement('section');
+  page.className = 'ex-page';
+  page.id = 'cours';
+
+  page.innerHTML = `
+    <div class="ex-top">
+      <div class="ex-icon">📚</div>
+      <div class="ex-info">
+        <h2>Cours — HTML & Organisation des blocs</h2>
+        <div class="tag-row">
+          <span class="tag green">Théorie</span>
+          <span class="tag navy">⏱ 15 min de lecture</span>
+          <span class="tag gold">À lire avant les exercices</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== PARTIE 1 : LES BASES DU HTML ========== -->
+
+    <div class="cours-block">
+      <h3>📄 Partie 1 — C'est quoi le HTML ?</h3>
+      <p>Le <strong>HTML</strong> (HyperText Markup Language) c'est le <em>squelette</em> de toutes les pages web. C'est comme le <strong>plan d'un stade</strong> : ça définit où sont les tribunes, le terrain, les vestiaires...</p>
+      <p>Le <strong>CSS</strong> (Cascading Style Sheets) c'est la <em>décoration</em> : les couleurs, les tailles, les positions. C'est comme le maillot de l'équipe !</p>
+      <p>Chaque page HTML a cette structure de base :</p>
+      <div class="code-block"><span class="c-tag">&lt;!DOCTYPE html&gt;</span>          <span class="c-comment">&lt;!-- Dit au navigateur : c'est du HTML --&gt;</span>
+<span class="c-tag">&lt;html</span> <span class="c-prop">lang</span>=<span class="c-str">"fr"</span><span class="c-tag">&gt;</span>         <span class="c-comment">&lt;!-- Début de la page, en français --&gt;</span>
+<span class="c-tag">&lt;head&gt;</span>                    <span class="c-comment">&lt;!-- Infos INVISIBLES (titre, styles...) --&gt;</span>
+  <span class="c-tag">&lt;title&gt;</span>Mon site<span class="c-tag">&lt;/title&gt;</span>
+  <span class="c-tag">&lt;style&gt;</span> ... <span class="c-tag">&lt;/style&gt;</span>   <span class="c-comment">&lt;!-- Le CSS va ici --&gt;</span>
+<span class="c-tag">&lt;/head&gt;</span>
+<span class="c-tag">&lt;body&gt;</span>                    <span class="c-comment">&lt;!-- Tout ce qui S'AFFICHE à l'écran --&gt;</span>
+  <span class="c-tag">&lt;h1&gt;</span>Bienvenue !<span class="c-tag">&lt;/h1&gt;</span>
+  <span class="c-tag">&lt;p&gt;</span>Mon premier texte.<span class="c-tag">&lt;/p&gt;</span>
+<span class="c-tag">&lt;/body&gt;</span>
+<span class="c-tag">&lt;/html&gt;</span></div>
+    </div>
+
+    <div class="cours-block">
+      <h3>🏷️ Les balises HTML les plus courantes</h3>
+      <p>Chaque balise a un rôle précis, comme chaque joueur sur le terrain :</p>
+      <ul>
+        <li><code>&lt;h1&gt;</code> à <code>&lt;h6&gt;</code> — <strong>Titres</strong> (h1 = le plus gros, h6 = le plus petit)</li>
+        <li><code>&lt;p&gt;</code> — <strong>Paragraphe</strong> de texte</li>
+        <li><code>&lt;div&gt;</code> — <strong>Boîte invisible</strong> pour regrouper des éléments</li>
+        <li><code>&lt;span&gt;</code> — <strong>Étiquette invisible</strong> autour d'un bout de texte</li>
+        <li><code>&lt;a href="..."&gt;</code> — <strong>Lien</strong> cliquable vers une autre page</li>
+        <li><code>&lt;img src="..."&gt;</code> — <strong>Image</strong></li>
+        <li><code>&lt;ul&gt;</code> + <code>&lt;li&gt;</code> — <strong>Liste</strong> à puces</li>
+        <li><code>&lt;strong&gt;</code> — Texte en <strong>gras</strong></li>
+        <li><code>&lt;em&gt;</code> — Texte en <em>italique</em></li>
+      </ul>
+      <div class="code-block"><span class="c-comment">&lt;!-- Exemple concret --&gt;</span>
+<span class="c-tag">&lt;div</span> <span class="c-prop">class</span>=<span class="c-str">"carte"</span><span class="c-tag">&gt;</span>
+  <span class="c-tag">&lt;h2&gt;</span>Achraf Hakimi<span class="c-tag">&lt;/h2&gt;</span>
+  <span class="c-tag">&lt;p&gt;</span>Poste : <span class="c-tag">&lt;strong&gt;</span>Arrière Droit<span class="c-tag">&lt;/strong&gt;</span><span class="c-tag">&lt;/p&gt;</span>
+  <span class="c-tag">&lt;p&gt;</span>Vitesse : <span class="c-tag">&lt;span</span> <span class="c-prop">class</span>=<span class="c-str">"stat"</span><span class="c-tag">&gt;</span>96<span class="c-tag">&lt;/span&gt;</span><span class="c-tag">&lt;/p&gt;</span>
+  <span class="c-tag">&lt;a</span> <span class="c-prop">href</span>=<span class="c-str">"equipe.html"</span><span class="c-tag">&gt;</span>Voir l'équipe<span class="c-tag">&lt;/a&gt;</span>
+<span class="c-tag">&lt;/div&gt;</span></div>
+    </div>
+
+    <div class="cours-block">
+      <h3>🧱 Block vs Inline — La règle fondamentale</h3>
+      <p>En HTML, chaque élément est soit <strong>block</strong> soit <strong>inline</strong>. C'est la base de tout ce cours !</p>
+
+      <div class="concept" style="margin:14px 0;">
+        <div class="concept-title">📦 Éléments BLOCK</div>
+        Prennent <strong>toute la largeur</strong> disponible.<br>
+        Le suivant passe <em>à la ligne en dessous</em>.<br><br>
+        Exemples : <code>&lt;div&gt;</code> · <code>&lt;p&gt;</code> · <code>&lt;h1&gt;</code> à <code>&lt;h6&gt;</code> · <code>&lt;ul&gt;</code> · <code>&lt;header&gt;</code>
+      </div>
+
+      <div class="demo-zone">
+        <div class="demo-box" style="background:var(--navy);color:var(--gold);">&#8592; &lt;div&gt; : prend TOUTE la largeur &#8594;</div>
+        <div class="demo-box" style="background:var(--terra);color:white;">&#8592; &lt;p&gt; : prend TOUTE la largeur &#8594;</div>
+        <div class="demo-box" style="background:var(--green);color:white;">&#8592; &lt;h2&gt; : prend TOUTE la largeur &#8594;</div>
+        <p class="demo-label">&#8593; Chaque block est sur sa propre ligne, empilés verticalement</p>
+      </div>
+
+      <div class="concept" style="margin:14px 0;">
+        <div class="concept-title">📝 Éléments INLINE</div>
+        Prennent <strong>juste la place de leur contenu</strong>.<br>
+        Restent <em>sur la même ligne</em> que ce qui est autour.<br><br>
+        Exemples : <code>&lt;span&gt;</code> · <code>&lt;a&gt;</code> · <code>&lt;strong&gt;</code> · <code>&lt;em&gt;</code> · <code>&lt;img&gt;</code>
+      </div>
+
+      <div class="demo-zone">
+        <span class="demo-box" style="background:var(--navy);color:var(--gold);display:inline;">span</span>
+        <span class="demo-box" style="background:var(--terra);color:white;display:inline;">a</span>
+        <span class="demo-box" style="background:var(--green);color:white;display:inline;">strong</span>
+        <span class="demo-box" style="background:var(--purple);color:white;display:inline;">em</span>
+        <p class="demo-label">&#8593; Tous les inlines restent côte à côte sur la même ligne</p>
+      </div>
+
+      <div class="concept" style="margin:14px 0;">
+        <div class="concept-title">&#129513; Et inline-block alors ?</div>
+        C'est le <strong>meilleur des deux mondes</strong> :<br>
+        • Reste <em>côte à côte</em> comme un inline<br>
+        • Accepte une <em>largeur et des marges</em> comme un block<br><br>
+        On l'utilise beaucoup pour mettre des <strong>cartes côte à côte</strong> (comme les cartes FIFA) !
+      </div>
+    </div>
+
+    <div class="ornament">&#10022; &nbsp;&#10022; &nbsp;&#10022;</div>
+
+    <!-- ========== PARTIE 2 : POSITION CSS ========== -->
+
+    <div class="cours-block">
+      <h3>📍 Partie 2 — Positionner les éléments avec CSS</h3>
+      <p>Par défaut, les éléments suivent le <strong>flux normal</strong> : les blocks s'empilent, les inlines se suivent. Mais parfois on veut <em>déplacer</em> un élément à un endroit précis !</p>
+      <p>C'est là que la propriété <code>position</code> entre en jeu. Il y a <strong>3 valeurs</strong> importantes :</p>
+    </div>
+
+    <!-- STATIC -->
+    <div class="cours-block">
+      <h3>1&#65039;&#8419; position: static — Le comportement par défaut</h3>
+      <div class="concept" style="margin:14px 0;">
+        <div class="concept-title">&#127979; L'analogie de la classe</div>
+        Imagine les élèves assis en classe, chacun à sa place attribuée par le prof. Personne ne bouge. C'est <code>position: static</code> — la position <strong>normale par défaut</strong>.
+      </div>
+      <ul>
+        <li>C'est le comportement <strong>par défaut</strong> de tous les éléments</li>
+        <li>Les propriétés <code>top</code>, <code>left</code>, <code>right</code>, <code>bottom</code> sont <strong>complètement ignorées</strong></li>
+        <li>Pas besoin de l'écrire — c'est automatique</li>
+      </ul>
+      <div class="code-block"><span class="c-sel">.element</span> {
+  <span class="c-prop">position</span>: <span class="c-val">static</span>;  <span class="c-comment">/* par défaut, pas besoin de l'écrire */</span>
+  <span class="c-prop">top</span>: <span class="c-val">50px</span>;       <span class="c-comment">/* &#10060; IGNORÉ ! Aucun effet avec static */</span>
+  <span class="c-prop">left</span>: <span class="c-val">100px</span>;    <span class="c-comment">/* &#10060; IGNORÉ aussi ! */</span>
+}</div>
+      <div class="demo-zone">
+        <div style="background:var(--navy);color:var(--gold);padding:10px 16px;border-radius:6px;margin:4px 0;font-weight:800;">&#9917; Joueur 1 — static</div>
+        <div style="background:var(--terra);color:white;padding:10px 16px;border-radius:6px;margin:4px 0;font-weight:800;">&#9917; Joueur 2 — static</div>
+        <div style="background:var(--green);color:white;padding:10px 16px;border-radius:6px;margin:4px 0;font-weight:800;">&#9917; Joueur 3 — static</div>
+        <p class="demo-label">Tout le monde à sa place, impossible de bouger avec top/left</p>
+      </div>
+    </div>
+
+    <!-- RELATIVE -->
+    <div class="cours-block">
+      <h3>2&#65039;&#8419; position: relative — Se déplacer depuis sa place</h3>
+      <div class="concept" style="margin:14px 0;">
+        <div class="concept-title">&#129681; L'analogie de la chaise</div>
+        Tu es assis en classe à ta place. Tu te lèves et tu fais 2 pas à droite.<br>
+        <strong>Mais ta chaise reste là où elle était !</strong> Les autres élèves ne bougent pas — ta place est toujours réservée.<br><br>
+        C'est exactement ça <code>position: relative</code> : l'élément se <em>déplace visuellement</em>, mais son <em>espace d'origine reste occupé</em>.
+      </div>
+      <ul>
+        <li>L'élément se déplace <strong>par rapport à sa position normale</strong></li>
+        <li><code>top: 20px</code> &#8594; descend de 20px &nbsp;/&nbsp; <code>top: -20px</code> &#8594; monte de 20px</li>
+        <li><code>left: 30px</code> &#8594; va à droite de 30px &nbsp;/&nbsp; <code>left: -30px</code> &#8594; va à gauche</li>
+        <li>L'espace original est <strong>toujours réservé</strong> (les voisins ne bougent pas)</li>
+      </ul>
+      <div class="code-block"><span class="c-sel">.badge</span> {
+  <span class="c-prop">position</span>: <span class="c-val">relative</span>;  <span class="c-comment">/* active le déplacement */</span>
+  <span class="c-prop">top</span>: <span class="c-val">-20px</span>;       <span class="c-comment">/* monte de 20px */</span>
+  <span class="c-prop">left</span>: <span class="c-val">50px</span>;       <span class="c-comment">/* va 50px vers la droite */</span>
+}</div>
+      <div class="demo-zone">
+        <div style="background:var(--navy);color:var(--gold);padding:10px 16px;border-radius:6px;margin:4px 0;font-weight:800;">&#9917; Joueur 1 — normal</div>
+        <div style="background:var(--terra);color:white;padding:10px 16px;border-radius:6px;margin:4px 0;font-weight:800;position:relative;left:60px;top:-8px;box-shadow:3px 3px 0 var(--gold);">&#9917; Joueur 2 — relative (left:60px, top:-8px)</div>
+        <div style="background:var(--green);color:white;padding:10px 16px;border-radius:6px;margin:4px 0;font-weight:800;">&#9917; Joueur 3 — normal (ne bouge pas !)</div>
+        <p class="demo-label">Le joueur 2 s'est déplacé visuellement, mais sa place originale est toujours réservée (espace vide)</p>
+      </div>
+    </div>
+
+    <!-- ABSOLUTE -->
+    <div class="cours-block">
+      <h3>3&#65039;&#8419; position: absolute — Libre comme l'air</h3>
+      <div class="concept" style="margin:14px 0;">
+        <div class="concept-title">&#9917; L'analogie du terrain de foot</div>
+        Imagine un joueur qui quitte sa position tactique et va <strong>exactement où il veut</strong> sur le terrain. Sa place dans la formation <em>disparaît</em> — les autres joueurs se resserrent.<br><br>
+        <strong>Le terrain</strong> = le parent qui a <code>position: relative</code><br>
+        <strong>Le joueur libre</strong> = l'élément en <code>position: absolute</code><br><br>
+        &#9888;&#65039; <strong>Règle d'or :</strong> le parent DOIT avoir <code>position: relative</code> pour servir de terrain de référence !
+      </div>
+      <ul>
+        <li>L'élément est <strong>retiré du flux</strong> — sa place disparaît, les voisins se resserrent</li>
+        <li>Il se positionne par rapport au <strong>parent positionné le plus proche</strong> (qui a relative ou absolute)</li>
+        <li><code>top: 10px</code> &#8594; à 10px du haut du parent</li>
+        <li><code>right: 10px</code> &#8594; à 10px du bord droit du parent</li>
+        <li>Si aucun parent n'a de position &#8594; il se place par rapport à la page entière !</li>
+      </ul>
+      <div class="code-block"><span class="c-comment">/* Le parent = le terrain de référence */</span>
+<span class="c-sel">.carte</span> {
+  <span class="c-prop">position</span>: <span class="c-val">relative</span>;  <span class="c-comment">/* OBLIGATOIRE sur le parent */</span>
+}
+
+<span class="c-comment">/* L'enfant se place librement DANS le parent */</span>
+<span class="c-sel">.badge</span> {
+  <span class="c-prop">position</span>: <span class="c-val">absolute</span>;  <span class="c-comment">/* sort du flux, libre ! */</span>
+  <span class="c-prop">top</span>: <span class="c-val">10px</span>;        <span class="c-comment">/* à 10px du haut de .carte */</span>
+  <span class="c-prop">right</span>: <span class="c-val">10px</span>;      <span class="c-comment">/* à 10px du bord droit */</span>
+}</div>
+      <div class="demo-zone" style="min-height:150px;">
+        <div style="position:absolute;top:12px;left:12px;background:var(--gold);color:var(--navy);padding:6px 14px;border-radius:20px;font-weight:900;font-size:0.85em;">top:12px, left:12px</div>
+        <div style="position:absolute;top:12px;right:12px;background:var(--red);color:white;padding:6px 14px;border-radius:20px;font-weight:900;font-size:0.85em;">top:12px, right:12px</div>
+        <div style="position:absolute;bottom:12px;left:12px;background:var(--green);color:white;padding:6px 14px;border-radius:20px;font-weight:900;font-size:0.85em;">bottom:12px, left:12px</div>
+        <div style="position:absolute;bottom:12px;right:12px;background:var(--purple);color:white;padding:6px 14px;border-radius:20px;font-weight:900;font-size:0.85em;">bottom:12px, right:12px</div>
+        <p style="text-align:center;color:#999;font-size:0.85em;margin-top:55px;">&#8592; La zone pointillée = le parent (position: relative) &#8594;<br>Les badges se placent aux 4 coins !</p>
+      </div>
+    </div>
+
+    <!-- EXEMPLE CONCRET : CARTE FIFA -->
+    <div class="cours-block">
+      <h3>&#127183; Exemple concret : la carte joueur</h3>
+      <p>Voici un exemple réel qui utilise les 3 positions. La carte a <code>position: relative</code>, et le badge de note utilise <code>position: absolute</code> pour aller dans le coin :</p>
+      <div class="code-block"><span class="c-comment">/* La carte = le terrain */</span>
+<span class="c-sel">.carte-joueur</span> {
+  <span class="c-prop">position</span>: <span class="c-val">relative</span>;   <span class="c-comment">/* sert de référence */</span>
+  <span class="c-prop">width</span>: <span class="c-val">250px</span>;
+  <span class="c-prop">padding</span>: <span class="c-val">20px</span>;
+}
+
+<span class="c-comment">/* Le nom = position normale (static) */</span>
+<span class="c-sel">.nom</span> {
+  <span class="c-prop">display</span>: <span class="c-val">block</span>;     <span class="c-comment">/* toute la largeur */</span>
+  <span class="c-prop">font-size</span>: <span class="c-val">1.4em</span>;
+}
+
+<span class="c-comment">/* Les stats = côte à côte */</span>
+<span class="c-sel">.stat</span> {
+  <span class="c-prop">display</span>: <span class="c-val">inline-block</span>; <span class="c-comment">/* côte à côte */</span>
+  <span class="c-prop">width</span>: <span class="c-val">30%</span>;
+}
+
+<span class="c-comment">/* Le badge = dans le coin */</span>
+<span class="c-sel">.badge-note</span> {
+  <span class="c-prop">position</span>: <span class="c-val">absolute</span>;  <span class="c-comment">/* libre dans la carte */</span>
+  <span class="c-prop">top</span>: <span class="c-val">-10px</span>;
+  <span class="c-prop">right</span>: <span class="c-val">-10px</span>;
+}</div>
+    </div>
+
+    <!-- RECAP -->
+    <div class="cours-block">
+      <h3>📋 Récapitulatif — Quelle position utiliser ?</h3>
+      <div style="overflow-x:auto;">
+        <table class="cours-table">
+          <thead>
+            <tr>
+              <th>Position</th>
+              <th>Comportement</th>
+              <th>top/left ?</th>
+              <th>Quand l'utiliser ?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>static</code></td>
+              <td>Flux normal (par défaut)</td>
+              <td>&#10060; Ignorés</td>
+              <td>Par défaut, pas besoin de l'écrire</td>
+            </tr>
+            <tr>
+              <td><code>relative</code></td>
+              <td>Se déplace depuis sa place</td>
+              <td>&#9989; Oui</td>
+              <td>Ajuster un badge, déplacer un élément</td>
+            </tr>
+            <tr>
+              <td><code>absolute</code></td>
+              <td>Libre dans son parent</td>
+              <td>&#9989; Oui</td>
+              <td>Placer un badge dans un coin précis</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-title">&#128161; L'astuce à retenir</div>
+      Pour utiliser <code>position: absolute</code> sur un enfant, le parent <strong>DOIT</strong> avoir <code>position: relative</code>.<br><br>
+      C'est le <strong>duo magique</strong> : <em>relative</em> sur le parent + <em>absolute</em> sur l'enfant = placement ultra précis !<br><br>
+      Sans ça, l'élément absolute se positionne par rapport à toute la page — et c'est le bazar !
+    </div>
+
+    <div class="ornament">&#10022; &nbsp;&#10022; &nbsp;&#10022;</div>
+  `;
+
+  main.appendChild(page);
+}
+
+/* =====================================================
    INTERACTIONS
 ===================================================== */
 function switchEx(id) {
   document.querySelectorAll('.ex-btn')
-    .forEach(b => b.classList.toggle('active', parseInt(b.dataset.id) === id));
+    .forEach(b => b.classList.toggle('active', b.dataset.id == id));
   document.querySelectorAll('.ex-page')
-    .forEach(p => p.classList.toggle('active', p.id === 'ex' + id));
+    .forEach(p => p.classList.toggle('active', p.id === (id === 'cours' ? 'cours' : 'ex' + id)));
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -1107,6 +1495,31 @@ function switchBA(exId, mode, btn) {
   document.getElementById('bf-' + mode + '-' + exId).classList.add('active');
 }
 
+const EX_FILES = {
+  1: "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImZyIj4KPGhlYWQ+CiAgPG1ldGEgY2hhcnNldD0iVVRGLTgiPgogIDx0aXRsZT5FeGVyY2ljZSAxIOKAlCBCbG9jayB2cyBJbmxpbmUg4q2QPC90aXRsZT4KICA8c3R5bGU+CgogICAgLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgIENTUyBEw4lDT1JBVElGIOKAlCBkw6lqw6AgZmFpdCBwb3VyIHRvaSwgbmUgdG91Y2hlIHBhcyAhCiAgICAgICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwogICAgYm9keSB7CiAgICAgIGZvbnQtZmFtaWx5OiAnU2Vnb2UgVUknLCBzYW5zLXNlcmlmOwogICAgICBiYWNrZ3JvdW5kOiAjMUIyQTRBOwogICAgICBjb2xvcjogI0ZFRjBEQzsKICAgICAgcGFkZGluZzogMzBweDsKICAgICAgbWFyZ2luOiAwOwogICAgfQogICAgaDEgewogICAgICBjb2xvcjogI0Q0QUYzNzsKICAgICAgYm9yZGVyLWJvdHRvbTogMnB4IHNvbGlkICNENEFGMzc7CiAgICAgIHBhZGRpbmctYm90dG9tOiAxMHB4OwogICAgfQogICAgaDIgeyBjb2xvcjogI0M4Nzk0MTsgfQoKICAgIC5lbmNhZHJlIHsKICAgICAgYmFja2dyb3VuZDogI0ZFRjBEQzsKICAgICAgY29sb3I6ICMxQjJBNEE7CiAgICAgIGJvcmRlci1yYWRpdXM6IDEwcHg7CiAgICAgIHBhZGRpbmc6IDIwcHggMjVweDsKICAgICAgbWFyZ2luOiAyMHB4IDA7CiAgICB9CiAgICAuam91ZXVyIHsKICAgICAgYmFja2dyb3VuZDogIzFCMkE0QTsKICAgICAgY29sb3I6ICNENEFGMzc7CiAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICBmb250LXNpemU6IDE4cHg7CiAgICAgIHBhZGRpbmc6IDhweCAxNnB4OwogICAgICBtYXJnaW46IDRweDsKICAgICAgYm9yZGVyLXJhZGl1czogNnB4OwogICAgICBib3JkZXI6IDJweCBzb2xpZCAjRDRBRjM3OwogICAgfQogICAgLmNvbnNlaWwgewogICAgICBiYWNrZ3JvdW5kOiAjQzg3OTQxOwogICAgICBjb2xvcjogd2hpdGU7CiAgICAgIGJvcmRlci1yYWRpdXM6IDhweDsKICAgICAgcGFkZGluZzogMTVweCAyMHB4OwogICAgICBtYXJnaW4tdG9wOiAyMHB4OwogICAgICBmb250LXNpemU6IDE1cHg7CiAgICB9CiAgICAub2JqZWN0aWYgewogICAgICBiYWNrZ3JvdW5kOiAjRDRBRjM3OwogICAgICBjb2xvcjogIzFCMkE0QTsKICAgICAgYm9yZGVyLXJhZGl1czogOHB4OwogICAgICBwYWRkaW5nOiAxNXB4IDIwcHg7CiAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICBmb250LXNpemU6IDE1cHg7CiAgICAgIG1hcmdpbjogMTVweCAwOwogICAgfQogICAgY29kZSB7CiAgICAgIGJhY2tncm91bmQ6ICMwRDExMTc7CiAgICAgIGNvbG9yOiAjNzlDMEZGOwogICAgICBwYWRkaW5nOiAycHggN3B4OwogICAgICBib3JkZXItcmFkaXVzOiA0cHg7CiAgICAgIGZvbnQtc2l6ZTogMTRweDsKICAgIH0KCgogICAgLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgIMOAIFRPSSBERSBKT1VFUiAhCiAgICAgICBFeGVyY2ljZSAxIOKAlCBCbG9jayB2cyBJbmxpbmUKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CgogICAgICAgUFJPQkzDiE1FIDogbGVzIG5vbXMgZGVzIGpvdWV1cnMgKGJhbGlzZXMgLmpvdWV1cikKICAgICAgIHNvbnQgY29sbMOpcyBzdXIgbGEgbcOqbWUgbGlnbmUuIEMnZXN0IHBhcmNlIHF1ZQogICAgICAgPHNwYW4+IGVzdCBJTkxJTkUgcGFyIGTDqWZhdXQuCgogICAgICAgVE9OIE9CSkVDVElGIDogZmFpcmUgcXVlIGNoYXF1ZSBqb3VldXIKICAgICAgIGFwcGFyYWlzc2Ugc3VyIFNBIFBST1BSRSBMSUdORS4KCiAgICAgICBJTkRJQ0UgOiBjaGVyY2hlIGxhIHByb3ByacOpdMOpICJkaXNwbGF5IgogICAgICAgZXQgbGEgdmFsZXVyICJibG9jayIuCgogICAgICAg4oaTIMOJQ1JJUyBUT04gQ1NTIElDSSDihpMKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCgogICAgLmpvdWV1ciB7CiAgICAgIC8qIFF1ZSBzZSBwYXNzZS10LWlsIHNpIHR1IGFqb3V0ZXMgOiBkaXNwbGF5OiBibG9jazsgPyAqLwoKICAgIH0KCiAgICAvKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAg4oaRIEZJTiBERSBUQSBaT05FIERFIENPREUg4oaRCiAgICAgICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwoKICA8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5PgoKICA8aDE+4q2QIEV4ZXJjaWNlIDEg4oCUIEJsb2NrIHZzIElubGluZTwvaDE+CgogIDxkaXYgY2xhc3M9Im9iamVjdGlmIj4KICAgIPCfjq8gT2JqZWN0aWYgOiBGYWlzIGFwcGFyYcOudHJlIGNoYXF1ZSBqb3VldXIgc3VyIHNhIHByb3ByZSBsaWduZS4KICA8L2Rpdj4KCiAgPGRpdiBjbGFzcz0iZW5jYWRyZSI+CiAgICA8aDI+U8OpbGVjdGlvbiBGQyBBdGxhcyDigJQgTGlzdGUgZGVzIGpvdWV1cnM8L2gyPgoKICAgIDwhLS0KICAgICAgQ2VzIGJhbGlzZXMgPHNwYW4+IHNvbnQgSU5MSU5FIHBhciBkw6lmYXV0LgogICAgICBSw6lzdWx0YXQgOiB0b3VzIGxlcyBub21zIHNvbnQgY29sbMOpcyBzdXIgbGEgbcOqbWUgbGlnbmUgIQogICAgICBDJ2VzdCB0b2kgcXVpIGRvaXMgY2hhbmdlciDDp2EgZGFucyBsZSBDU1MuCiAgICAtLT4KICAgIDxzcGFuIGNsYXNzPSJqb3VldXIiPuKavSBBY2hyYWYgSGFraW1pPC9zcGFuPgogICAgPHNwYW4gY2xhc3M9ImpvdWV1ciI+8J+npCBZYXNzaW5lIEJvdW5vdTwvc3Bhbj4KICAgIDxzcGFuIGNsYXNzPSJqb3VldXIiPuKaoSBIYWtpbSBaaXllY2g8L3NwYW4+CiAgICA8c3BhbiBjbGFzcz0iam91ZXVyIj7wn46vIFlvdXNzZWYgRW4tTmVzeXJpPC9zcGFuPgogICAgPHNwYW4gY2xhc3M9ImpvdWV1ciI+8J+boe+4jyBOb3Vzc2FpciBNYXpyYW91aTwvc3Bhbj4KICA8L2Rpdj4KCiAgPGRpdiBjbGFzcz0iY29uc2VpbCI+CiAgICDwn5KhIDxzdHJvbmc+UmFwcGVsIDo8L3N0cm9uZz4KICAgIFVuIMOpbMOpbWVudCA8Y29kZT5ibG9jazwvY29kZT4gcHJlbmQgdG91dGUgbGEgbGFyZ2V1ciBkaXNwb25pYmxlIOKGkiBub3V2ZWxsZSBsaWduZSBhdXRvbWF0aXF1ZS48YnI+CiAgICBVbiDDqWzDqW1lbnQgPGNvZGU+aW5saW5lPC9jb2RlPiByZXN0ZSBkYW5zIGxhIGxpZ25lIGNvbW1lIGxlcyBtb3RzIGRhbnMgdW5lIHBocmFzZS4KICA8L2Rpdj4KCiAgPCEtLSA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgR1VJREUgUEFTIMOAIFBBUyAobGlzIHNldWxlbWVudCBzaSB0dSBibG9xdWVzKQoKICAgICAgIMOJdGFwZSAxIDogT2JzZXJ2ZSBsZSBwcm9ibMOobWUKICAgICAgICAg4oaSIFRvdXMgbGVzIGpvdWV1cnMgc29udCBjb2xsw6lzID8gTm9ybWFsICEKICAgICAgICAgICBMZXMgPHNwYW4+IHNvbnQgaW5saW5lIHBhciBkw6lmYXV0LgoKICAgICAgIMOJdGFwZSAyIDogVHJvdXZlIGNlIHF1J2lsIGZhdXQgY2hhbmdlcgogICAgICAgICDihpIgTGEgcHJvcHJpw6l0w6kgQ1NTIHF1aSBjb250csO0bGUgw6dhIHMnYXBwZWxsZSA6IGRpc3BsYXkKICAgICAgICAg4oaSIEVsbGUgZXN0IGTDqWrDoCBkYW5zIGxlIENTUyAoem9uZSAiw4AgdG9pIGRlIGpvdWVyIikKCiAgICAgICDDiXRhcGUgMyA6IENoYW5nZSBsYSB2YWxldXIKICAgICAgICAg4oaSIMOJY3JpcyA6ICBkaXNwbGF5OiBibG9jazsKICAgICAgICAg4oaSIFNhdXZlZ2FyZGUgKEN0cmwrUykgZXQgcmFmcmHDrmNoaXMgKEY1KQoKICAgICAgIMOJdGFwZSA0IDogT2JzZXJ2ZSBsZSByw6lzdWx0YXQKICAgICAgICAg4oaSIENoYXF1ZSBqb3VldXIgZXN0IG1haW50ZW5hbnQgc3VyIHNhIHByb3ByZSBsaWduZSAhCgogICAgICAgUE9VUlFVT0kgw4dBIE1BUkNIRSA/CiAgICAgICAgIOKGkiBibG9jayBmb3JjZSBsJ8OpbMOpbWVudCDDoCBwcmVuZHJlIFRPVVRFIGxhIGxhcmdldXIKICAgICAgICAg4oaSIERvbmMgbGUgc3VpdmFudCBuJ2EgcGx1cyBkZSBwbGFjZSDihpIgaWwgcGFzc2Ugw6AgbGEgbGlnbmUKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09IC0tPgoKPC9ib2R5Pgo8L2h0bWw+Cg==",
+  2: "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImZyIj4KPGhlYWQ+CiAgPG1ldGEgY2hhcnNldD0iVVRGLTgiPgogIDx0aXRsZT5FeGVyY2ljZSAyIOKAlCBDYXJ0ZXMgRklGQSBjw7R0ZSDDoCBjw7R0ZSDirZDirZA8L3RpdGxlPgogIDxzdHlsZT4KCiAgICAvKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgQ1NTIETDiUNPUkFUSUYg4oCUIGTDqWrDoCBmYWl0IHBvdXIgdG9pLCBuZSB0b3VjaGUgcGFzICEKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCiAgICBib2R5IHsKICAgICAgZm9udC1mYW1pbHk6ICdTZWdvZSBVSScsIHNhbnMtc2VyaWY7CiAgICAgIGJhY2tncm91bmQ6ICMxQjJBNEE7CiAgICAgIGNvbG9yOiAjRkVGMERDOwogICAgICBwYWRkaW5nOiAzMHB4OwogICAgICBtYXJnaW46IDA7CiAgICB9CiAgICBoMSB7IGNvbG9yOiAjRDRBRjM3OyBib3JkZXItYm90dG9tOiAycHggc29saWQgI0Q0QUYzNzsgcGFkZGluZy1ib3R0b206IDEwcHg7IH0KICAgIGgyIHsgY29sb3I6ICNDODc5NDE7IH0KCiAgICAudGVycmFpbiB7CiAgICAgIGJhY2tncm91bmQ6ICMyZDVhMjc7CiAgICAgIGJvcmRlci1yYWRpdXM6IDEycHg7CiAgICAgIHBhZGRpbmc6IDI1cHg7CiAgICAgIG1hcmdpbjogMjBweCAwOwogICAgICBib3JkZXI6IDNweCBzb2xpZCAjRDRBRjM3OwogICAgfQogICAgLmNhcnRlIHsKICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDE2MGRlZywgI0M4QTk1MSAwJSwgIzhCNjkxNCA1MCUsICNDOEE5NTEgMTAwJSk7CiAgICAgIGJvcmRlci1yYWRpdXM6IDEwcHg7CiAgICAgIHBhZGRpbmc6IDE1cHg7CiAgICAgIG1hcmdpbjogNnB4OwogICAgICBib3JkZXI6IDJweCBzb2xpZCAjRkZENzAwOwogICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICAgIGNvbG9yOiAjMUIyQTRBOwogICAgICBmb250LXdlaWdodDogYm9sZDsKICAgICAgYm94LXNoYWRvdzogMCA0cHggMTVweCByZ2JhKDAsMCwwLDAuNCk7CiAgICB9CiAgICAuY2FydGUgLm5vdGUgewogICAgICBmb250LXNpemU6IDM2cHg7CiAgICAgIGZvbnQtd2VpZ2h0OiA5MDA7CiAgICAgIGNvbG9yOiAjMUIyQTRBOwogICAgICBsaW5lLWhlaWdodDogMTsKICAgIH0KICAgIC5jYXJ0ZSAucG9zdGUgewogICAgICBmb250LXNpemU6IDExcHg7CiAgICAgIGZvbnQtd2VpZ2h0OiA4MDA7CiAgICAgIGxldHRlci1zcGFjaW5nOiAycHg7CiAgICAgIG1hcmdpbi1ib3R0b206IDhweDsKICAgIH0KICAgIC5jYXJ0ZSAubm9tIHsKICAgICAgZm9udC1zaXplOiAxNHB4OwogICAgICBmb250LXdlaWdodDogODAwOwogICAgICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwogICAgICBib3JkZXItdG9wOiAxcHggc29saWQgcmdiYSgwLDAsMCwwLjMpOwogICAgICBwYWRkaW5nLXRvcDogOHB4OwogICAgICBtYXJnaW4tdG9wOiA4cHg7CiAgICB9CiAgICAuY2FydGUgLnN0YXRzIHsKICAgICAgZm9udC1zaXplOiAxMXB4OwogICAgICBtYXJnaW4tdG9wOiA4cHg7CiAgICAgIGNvbG9yOiAjMmQxYTAwOwogICAgfQogICAgLm9iamVjdGlmIHsKICAgICAgYmFja2dyb3VuZDogI0Q0QUYzNzsKICAgICAgY29sb3I6ICMxQjJBNEE7CiAgICAgIGJvcmRlci1yYWRpdXM6IDhweDsKICAgICAgcGFkZGluZzogMTVweCAyMHB4OwogICAgICBmb250LXdlaWdodDogYm9sZDsKICAgICAgZm9udC1zaXplOiAxNXB4OwogICAgICBtYXJnaW46IDE1cHggMDsKICAgIH0KICAgIC5jb25zZWlsIHsKICAgICAgYmFja2dyb3VuZDogI0M4Nzk0MTsKICAgICAgY29sb3I6IHdoaXRlOwogICAgICBib3JkZXItcmFkaXVzOiA4cHg7CiAgICAgIHBhZGRpbmc6IDE1cHggMjBweDsKICAgICAgbWFyZ2luLXRvcDogMjBweDsKICAgICAgZm9udC1zaXplOiAxNXB4OwogICAgfQogICAgY29kZSB7CiAgICAgIGJhY2tncm91bmQ6ICMwRDExMTc7CiAgICAgIGNvbG9yOiAjNzlDMEZGOwogICAgICBwYWRkaW5nOiAycHggN3B4OwogICAgICBib3JkZXItcmFkaXVzOiA0cHg7CiAgICAgIGZvbnQtc2l6ZTogMTRweDsKICAgIH0KCgogICAgLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgIMOAIFRPSSBERSBKT1VFUiAhCiAgICAgICBFeGVyY2ljZSAyIOKAlCBDYXJ0ZXMgRklGQSBjw7R0ZSDDoCBjw7R0ZQogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KCiAgICAgICBQUk9CTMOITUUgOiBsZXMgY2FydGVzIHMnZW1waWxlbnQgbGVzIHVuZXMKICAgICAgIHNvdXMgbGVzIGF1dHJlcy4gQydlc3QgcGFyY2UgcXVlIDxkaXY+IGVzdAogICAgICAgQkxPQ0sgcGFyIGTDqWZhdXQuCgogICAgICAgVE9OIE9CSkVDVElGIDogYWZmaWNoZXIgbGVzIDMgY2FydGVzCiAgICAgICBDw5RURSDDgCBDw5RURSBjb21tZSBkYW5zIEZJRkEgVWx0aW1hdGUgVGVhbS4KCiAgICAgICBJTkRJQ0VTIDoKICAgICAgICAgMS4gQ2hlcmNoZSBsYSB2YWxldXIgImlubGluZS1ibG9jayIKICAgICAgICAgMi4gRG9ubmUgdW5lIGxhcmdldXIgZml4ZSDDoCBjaGFxdWUgY2FydGUKICAgICAgICAgMy4gQWxpZ25lLWxlcyBlbiBoYXV0IGF2ZWMgdmVydGljYWwtYWxpZ24KCiAgICAgICDihpMgw4lDUklTIFRPTiBDU1MgSUNJIOKGkwogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gKi8KCiAgICAuY2FydGUgewogICAgICAvKiDDiXRhcGUgMSA6IGNoYW5nZSBsZSBkaXNwbGF5IHBvdXIgcXUnZWxsZXMgc29pZW50IGPDtHRlIMOgIGPDtHRlICovCgogICAgICAvKiDDiXRhcGUgMiA6IGRvbm5lIHVuZSBsYXJnZXVyIGZpeGUgKGVzc2FpZSAxNjBweCkgKi8KCiAgICAgIC8qIMOJdGFwZSAzIDogYWxpZ25lLWxlcyBlbiBoYXV0ICh2ZXJ0aWNhbC1hbGlnbjogdG9wKSAqLwoKICAgIH0KCiAgICAvKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAg4oaRIEZJTiBERSBUQSBaT05FIERFIENPREUg4oaRCiAgICAgICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwoKICA8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5PgoKICA8aDE+4q2Q4q2QIEV4ZXJjaWNlIDIg4oCUIENhcnRlcyBGSUZBIGPDtHRlIMOgIGPDtHRlPC9oMT4KCiAgPGRpdiBjbGFzcz0ib2JqZWN0aWYiPgogICAg8J+OryBPYmplY3RpZiA6IEFmZmljaGUgbGVzIDMgY2FydGVzIGPDtHRlIMOgIGPDtHRlIGNvbW1lIGRhbnMgRklGQSBVVC4KICA8L2Rpdj4KCiAgPGRpdiBjbGFzcz0idGVycmFpbiI+CgogICAgPCEtLQogICAgICBDZXMgPGRpdiBjbGFzcz0iY2FydGUiPiBzb250IEJMT0NLIHBhciBkw6lmYXV0LgogICAgICBSw6lzdWx0YXQgOiBlbGxlcyBzJ2VtcGlsZW50IHZlcnRpY2FsZW1lbnQgIQogICAgICDDgCB0b2kgZGUgY29ycmlnZXIgw6dhIGRhbnMgbGUgQ1NTLgogICAgLS0+CgogICAgPGRpdiBjbGFzcz0iY2FydGUiPgogICAgICA8ZGl2IGNsYXNzPSJub3RlIj44NzwvZGl2PgogICAgICA8ZGl2IGNsYXNzPSJwb3N0ZSI+UkI8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ibm9tIj5IYWtpbWk8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ic3RhdHMiPlBBQyA5NiDigKIgRFJCIDg4IOKAoiBERUYgNzk8L2Rpdj4KICAgIDwvZGl2PgoKICAgIDxkaXYgY2xhc3M9ImNhcnRlIj4KICAgICAgPGRpdiBjbGFzcz0ibm90ZSI+ODU8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0icG9zdGUiPkdLPC9kaXY+CiAgICAgIDxkaXYgY2xhc3M9Im5vbSI+Qm91bm91PC9kaXY+CiAgICAgIDxkaXYgY2xhc3M9InN0YXRzIj5ESVYgODcg4oCiIFJFRiA4NSDigKIgUE9TIDg0PC9kaXY+CiAgICA8L2Rpdj4KCiAgICA8ZGl2IGNsYXNzPSJjYXJ0ZSI+CiAgICAgIDxkaXYgY2xhc3M9Im5vdGUiPjg0PC9kaXY+CiAgICAgIDxkaXYgY2xhc3M9InBvc3RlIj5DQU08L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ibm9tIj5aaXllY2g8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ic3RhdHMiPlBBUyA4NyDigKIgVElSIDgyIOKAoiBEUkIgODU8L2Rpdj4KICAgIDwvZGl2PgoKICA8L2Rpdj4KCiAgPGRpdiBjbGFzcz0iY29uc2VpbCI+CiAgICDwn5KhIDxzdHJvbmc+aW5saW5lLWJsb2NrPC9zdHJvbmc+ID0gbGUgbWVpbGxldXIgZGVzIGRldXggbW9uZGVzIDo8YnI+CiAgICDigKIgQ29tbWUgPGNvZGU+aW5saW5lPC9jb2RlPiDihpIgbGVzIMOpbMOpbWVudHMgcmVzdGVudCBjw7R0ZSDDoCBjw7R0ZTxicj4KICAgIOKAoiBDb21tZSA8Y29kZT5ibG9jazwvY29kZT4g4oaSIHR1IHBldXggZMOpZmluaXIgdW5lIGxhcmdldXIgZXQgdW5lIGhhdXRldXIKICA8L2Rpdj4KCiAgPCEtLSA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgR1VJREUgUEFTIMOAIFBBUyAobGlzIHNldWxlbWVudCBzaSB0dSBibG9xdWVzKQoKICAgICAgIMOJdGFwZSAxIDogQ2hhbmdlIGxlIGRpc3BsYXkKICAgICAgICAg4oaSIMOJY3JpcyA6ICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICAgICAgIOKGkiBMZXMgY2FydGVzIHZvbnQgc2UgbWV0dHJlIGPDtHRlIMOgIGPDtHRlICEKICAgICAgICAg4oaSIE1haXMgZWxsZXMgc29udCBwZXV0LcOqdHJlIHRyb3AgbGFyZ2VzLi4uCgogICAgICAgw4l0YXBlIDIgOiBGaXhlIGxhIGxhcmdldXIKICAgICAgICAg4oaSIMOJY3JpcyA6ICB3aWR0aDogMTYwcHg7CiAgICAgICAgIOKGkiBDaGFxdWUgY2FydGUgZmFpdCBtYWludGVuYW50IDE2MHB4IGRlIGxhcmdlLgoKICAgICAgIMOJdGFwZSAzIDogQWxpZ25lIGVuIGhhdXQKICAgICAgICAg4oaSIFR1IHJlbWFycXVlcyBxdWUgbGVzIGNhcnRlcyBzJ2FsaWduZW50IGVuIEJBUyA/CiAgICAgICAgIOKGkiDDiWNyaXMgOiAgdmVydGljYWwtYWxpZ246IHRvcDsKICAgICAgICAg4oaSIEVsbGVzIHMnYWxpZ25lbnQgbWFpbnRlbmFudCB0b3V0ZXMgZW4gaGF1dCAhCgogICAgICAgUE9VUlFVT0kgdmVydGljYWwtYWxpZ24gPwogICAgICAgICDihpIgUGFyIGTDqWZhdXQsIGxlcyDDqWzDqW1lbnRzIGlubGluZS1ibG9jayBzJ2FsaWduZW50CiAgICAgICAgICAgc3VyIGxhIGxpZ25lIGRlIGJhc2UgZHUgdGV4dGUgKGNvbW1lIGRlcyBsZXR0cmVzKS4KICAgICAgICAg4oaSICJ0b3AiIGZvcmNlIGwnYWxpZ25lbWVudCBlbiBoYXV0LgogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gLS0+Cgo8L2JvZHk+CjwvaHRtbD4K",
+  3: "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImZyIj4KPGhlYWQ+CiAgPG1ldGEgY2hhcnNldD0iVVRGLTgiPgogIDx0aXRsZT5FeGVyY2ljZSAzIOKAlCBQb3NpdGlvbiByZWxhdGl2ZSDirZDirZDirZA8L3RpdGxlPgogIDxzdHlsZT4KCiAgICAvKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgQ1NTIETDiUNPUkFUSUYg4oCUIGTDqWrDoCBmYWl0IHBvdXIgdG9pLCBuZSB0b3VjaGUgcGFzICEKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCiAgICBib2R5IHsKICAgICAgZm9udC1mYW1pbHk6ICdTZWdvZSBVSScsIHNhbnMtc2VyaWY7CiAgICAgIGJhY2tncm91bmQ6ICMxQjJBNEE7CiAgICAgIGNvbG9yOiAjRkVGMERDOwogICAgICBwYWRkaW5nOiAzMHB4OwogICAgICBtYXJnaW46IDA7CiAgICB9CiAgICBoMSB7IGNvbG9yOiAjRDRBRjM3OyBib3JkZXItYm90dG9tOiAycHggc29saWQgI0Q0QUYzNzsgcGFkZGluZy1ib3R0b206IDEwcHg7IH0KICAgIGgyIHsgY29sb3I6ICNDODc5NDE7IH0KCiAgICAuY2FydGUtam91ZXVyIHsKICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzFCMkE0QSAwJSwgIzJkNDA3MCAxMDAlKTsKICAgICAgYm9yZGVyOiAzcHggc29saWQgI0Q0QUYzNzsKICAgICAgYm9yZGVyLXJhZGl1czogMTJweDsKICAgICAgcGFkZGluZzogMjBweDsKICAgICAgd2lkdGg6IDI4MHB4OwogICAgICBtYXJnaW46IDMwcHggYXV0bzsKICAgICAgcG9zaXRpb246IHJlbGF0aXZlOyAvKiBkw6lqw6AgbMOgIHBvdXIgbGEgY2FydGUgZW50acOocmUgKi8KICAgIH0KICAgIC5jYXJ0ZS1qb3VldXIgLm5vbSB7CiAgICAgIGZvbnQtc2l6ZTogMjJweDsKICAgICAgZm9udC13ZWlnaHQ6IDkwMDsKICAgICAgY29sb3I6ICNENEFGMzc7CiAgICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7CiAgICB9CiAgICAuY2FydGUtam91ZXVyIC5wb3N0ZSB7CiAgICAgIGZvbnQtc2l6ZTogMTNweDsKICAgICAgY29sb3I6ICNDODc5NDE7CiAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICBtYXJnaW4tYm90dG9tOiAxMnB4OwogICAgfQogICAgLmNhcnRlLWpvdWV1ciAuaW5mb3MgewogICAgICBmb250LXNpemU6IDE0cHg7CiAgICAgIGNvbG9yOiAjRkVGMERDOwogICAgICBsaW5lLWhlaWdodDogMS44OwogICAgfQogICAgLmJhZGdlLWNhcGl0YWluZSB7CiAgICAgIGJhY2tncm91bmQ6ICNENEFGMzc7CiAgICAgIGNvbG9yOiAjMUIyQTRBOwogICAgICBmb250LXdlaWdodDogOTAwOwogICAgICBmb250LXNpemU6IDEycHg7CiAgICAgIHBhZGRpbmc6IDVweCAxMHB4OwogICAgICBib3JkZXItcmFkaXVzOiAyMHB4OwogICAgICBib3JkZXI6IDJweCBzb2xpZCAjMUIyQTRBOwogICAgICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgICB9CiAgICAub2JqZWN0aWYgewogICAgICBiYWNrZ3JvdW5kOiAjRDRBRjM3OwogICAgICBjb2xvcjogIzFCMkE0QTsKICAgICAgYm9yZGVyLXJhZGl1czogOHB4OwogICAgICBwYWRkaW5nOiAxNXB4IDIwcHg7CiAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICBmb250LXNpemU6IDE1cHg7CiAgICAgIG1hcmdpbjogMTVweCAwOwogICAgICBtYXgtd2lkdGg6IDYwMHB4OwogICAgfQogICAgLmFuYWxvZ2llIHsKICAgICAgYmFja2dyb3VuZDogIzBEMzM0OTsKICAgICAgYm9yZGVyLWxlZnQ6IDRweCBzb2xpZCAjRDRBRjM3OwogICAgICBib3JkZXItcmFkaXVzOiAwIDhweCA4cHggMDsKICAgICAgcGFkZGluZzogMTVweCAyMHB4OwogICAgICBtYXJnaW46IDE1cHggMDsKICAgICAgbWF4LXdpZHRoOiA2MDBweDsKICAgICAgZm9udC1zaXplOiAxNXB4OwogICAgfQogICAgLnNjaGVtYSB7CiAgICAgIGJhY2tncm91bmQ6ICMwRDExMTc7CiAgICAgIGJvcmRlci1yYWRpdXM6IDhweDsKICAgICAgcGFkZGluZzogMTVweCAyMHB4OwogICAgICBtYXJnaW46IDE1cHggMDsKICAgICAgbWF4LXdpZHRoOiA2MDBweDsKICAgICAgZm9udC1mYW1pbHk6IG1vbm9zcGFjZTsKICAgICAgZm9udC1zaXplOiAxM3B4OwogICAgICBjb2xvcjogIzc5QzBGRjsKICAgIH0KICAgIGNvZGUgewogICAgICBiYWNrZ3JvdW5kOiAjMEQxMTE3OwogICAgICBjb2xvcjogIzc5QzBGRjsKICAgICAgcGFkZGluZzogMnB4IDdweDsKICAgICAgYm9yZGVyLXJhZGl1czogNHB4OwogICAgICBmb250LXNpemU6IDE0cHg7CiAgICB9CgoKICAgIC8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAgICDDgCBUT0kgREUgSk9VRVIgIQogICAgICAgRXhlcmNpY2UgMyDigJQgUG9zaXRpb24gcmVsYXRpdmUKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CgogICAgICAgUFJPQkzDiE1FIDogbGUgYmFkZ2UgIkNhcGl0YWluZSIgYXBwYXJhw650CiAgICAgICBlbiBiYXMgZGUgbGEgY2FydGUsIGRhbnMgbGUgZmx1eCBub3JtYWwuCiAgICAgICBJbCBkb2l0IMOqdHJlIEVOIEhBVVQgw4AgRFJPSVRFIGRlIGxhIGNhcnRlLgoKICAgICAgIFRPTiBPQkpFQ1RJRiA6IGTDqXBsYWNlciBsZSBiYWRnZSBhdmVjCiAgICAgICBwb3NpdGlvbjogcmVsYXRpdmUsIHRvcCBldCByaWdodC4KCiAgICAgICBJTkRJQ0VTIDoKICAgICAgICAg4oCiIHBvc2l0aW9uOiByZWxhdGl2ZSDihpIgYWN0aXZlIGxlIGTDqXBsYWNlbWVudAogICAgICAgICDigKIgdG9wOiA/Pz9weCAgICAgICAgIOKGkiBtb250ZSBvdSBkZXNjZW5kCiAgICAgICAgIOKAoiByaWdodDogPz8/cHggICAgICAg4oaSIGRpc3RhbmNlIGRlcHVpcyBsYSBkcm9pdGUKICAgICAgICAg4oCiIEVzc2FpZSB0b3A6IC04MHB4IGV0IHJpZ2h0OiAtMTBweCBwb3VyIGNvbW1lbmNlciwKICAgICAgICAgICBwdWlzIGFqdXN0ZSBqdXNxdSfDoCBjZSBxdWUgw6dhIHNvaXQgYmllbiBwbGFjw6kgIQoKICAgICAgIOKGkyDDiUNSSVMgVE9OIENTUyBJQ0kg4oaTCiAgICAgICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwoKICAgIC5iYWRnZS1jYXBpdGFpbmUgewogICAgICAvKiDDiXRhcGUgMSA6IGFjdGl2ZSBsZSBwb3NpdGlvbm5lbWVudCByZWxhdGlmICovCgogICAgICAvKiDDiXRhcGUgMiA6IG1vbnRlIGxlIGJhZGdlICh0b3AgYXZlYyB2YWxldXIgbsOpZ2F0aXZlKSAqLwoKICAgICAgLyogw4l0YXBlIDMgOiBkw6ljYWxlLWxlIHZlcnMgbGEgZHJvaXRlICovCgogICAgfQoKICAgIC8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAgICDihpEgRklOIERFIFRBIFpPTkUgREUgQ09ERSDihpEKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCgogIDwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CgogIDxoMT7irZDirZDirZAgRXhlcmNpY2UgMyDigJQgUG9zaXRpb24gcmVsYXRpdmU8L2gxPgoKICA8ZGl2IGNsYXNzPSJvYmplY3RpZiI+CiAgICDwn46vIE9iamVjdGlmIDogRMOpcGxhY2UgbGUgYmFkZ2UgIkNhcGl0YWluZSIgZW4gaGF1dCDDoCBkcm9pdGUgZGUgbGEgY2FydGUuCiAgPC9kaXY+CgogIDxkaXYgY2xhc3M9ImFuYWxvZ2llIj4KICAgIPCfqpEgPHN0cm9uZz5MJ2FuYWxvZ2llIGRlIGxhIGNoYWlzZSA6PC9zdHJvbmc+PGJyPgogICAgSW1hZ2luZSBxdWUgdHUgZXMgYXNzaXMgZW4gY2xhc3NlLiBUYSBwbGFjZSBkYW5zIGxlIHJhbmcgPSB0YSA8ZW0+cG9zaXRpb24gbm9ybWFsZTwvZW0+Ljxicj4KICAgIEF2ZWMgPGNvZGU+cG9zaXRpb246IHJlbGF0aXZlPC9jb2RlPiwgdHUgdGUgbMOodmVzIGV0IHR1IHRlIGTDqWNhbGVzLjxicj4KICAgIDxzdHJvbmc+TWFpcyB0YSBjaGFpc2UgcmVzdGUgbMOgIG/DuSBlbGxlIMOpdGFpdCAhPC9zdHJvbmc+IExlIHJlc3RlIGRlIGxhIGNsYXNzZSBuZSBib3VnZSBwYXMuCiAgPC9kaXY+CgogIDxkaXYgY2xhc3M9InNjaGVtYSI+CiAgICB0b3A6IC0yMHB4ICAg4oaSIG1vbnRlIGRlIDIwcHggcGFyIHJhcHBvcnQgw6AgdGEgcG9zaXRpb248YnI+CiAgICB0b3A6IDIwcHggICAg4oaSIGRlc2NlbmQgZGUgMjBweDxicj4KICAgIGxlZnQ6IDMwcHggICDihpIgcyfDqWxvaWduZSBkZSAzMHB4IGRlcHVpcyBsYSBnYXVjaGU8YnI+CiAgICByaWdodDogMzBweCAg4oaSIHMnw6lsb2lnbmUgZGUgMzBweCBkZXB1aXMgbGEgZHJvaXRlCiAgPC9kaXY+CgogIDwhLS0KICAgIExhIGNhcnRlIGVzdCBkw6lqw6AgZW4gcG9zaXRpb246IHJlbGF0aXZlIChjJ2VzdCBmYWl0IHBvdXIgdG9pKS4KICAgIFR1IGRvaXMgZMOpcGxhY2VyIGxlIC5iYWRnZS1jYXBpdGFpbmUgYXZlYyBwb3NpdGlvbjogcmVsYXRpdmUKICAgIGV0IGxlcyBwcm9wcmnDqXTDqXMgdG9wIC8gcmlnaHQuCiAgLS0+CiAgPGRpdiBjbGFzcz0iY2FydGUtam91ZXVyIj4KICAgIDxkaXYgY2xhc3M9Im5vbSI+QWNocmFmIEhha2ltaTwvZGl2PgogICAgPGRpdiBjbGFzcz0icG9zdGUiPkFycmnDqHJlIERyb2l0IOKAlCBGQyBQYXJpczwvZGl2PgogICAgPGRpdiBjbGFzcz0iaW5mb3MiPgogICAgICDwn4yNIE1hcm9jPGJyPgogICAgICDwn5GfIFBpZWQgZHJvaXQ8YnI+CiAgICAgIPCfk48gMTgxIGNtPGJyPgogICAgICDwn46CIDI1IGFucwogICAgPC9kaXY+CgogICAgPCEtLSBDZSBiYWRnZSBkb2l0IGFsbGVyIGVuIGhhdXQgw6AgZHJvaXRlIGRlIGxhIGNhcnRlICEgLS0+CiAgICA8c3BhbiBjbGFzcz0iYmFkZ2UtY2FwaXRhaW5lIj7CqSBDYXBpdGFpbmU8L3NwYW4+CiAgPC9kaXY+CgogIDwhLS0gPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgIEdVSURFIFBBUyDDgCBQQVMgKGxpcyBzZXVsZW1lbnQgc2kgdHUgYmxvcXVlcykKCiAgICAgICDDiXRhcGUgMSA6IEFjdGl2ZSBsZSBwb3NpdGlvbm5lbWVudAogICAgICAgICDihpIgw4ljcmlzIGRhbnMgLmJhZGdlLWNhcGl0YWluZSA6CiAgICAgICAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlOwogICAgICAgICDihpIgUG91ciBsJ2luc3RhbnQgcmllbiBuZSBjaGFuZ2Ug4oCUIGMnZXN0IG5vcm1hbCAhCiAgICAgICAgICAgcG9zaXRpb246IHJlbGF0aXZlIHNldWwgbmUgZMOpcGxhY2UgcGFzIGVuY29yZS4KCiAgICAgICDDiXRhcGUgMiA6IE1vbnRlIGxlIGJhZGdlCiAgICAgICAgIOKGkiDDiWNyaXMgOiAgdG9wOiAtODBweDsKICAgICAgICAg4oaSIHRvcCBuw6lnYXRpZiA9IG1vbnRlciAoYml6YXJyZSBtYWlzIGMnZXN0IGNvbW1lIMOnYSAhKQogICAgICAgICDihpIgdG9wIHBvc2l0aWYgPSBkZXNjZW5kcmUKCiAgICAgICDDiXRhcGUgMyA6IETDqWNhbGUgdmVycyBsYSBkcm9pdGUKICAgICAgICAg4oaSIEVzc2FpZSA6ICByaWdodDogLTEwcHg7CiAgICAgICAgIOKGkiBBanVzdGUgbGEgdmFsZXVyIGp1c3F1J8OgIGNlIHF1ZSDDp2Egc29pdCBiaWVuIHBsYWPDqS4KCiAgICAgICBSQVBQRUwgSU1QT1JUQU5UIDoKICAgICAgICAg4oaSICJwb3NpdGlvbjogcmVsYXRpdmUiIG5lIHNvcnQgcGFzIGwnw6lsw6ltZW50IGR1IGZsdXguCiAgICAgICAgIOKGkiBMYSBwbGFjZSBkdSBiYWRnZSBlbiBiYXMgZGUgbGEgY2FydGUgZXN0IHRvdWpvdXJzCiAgICAgICAgICAgInLDqXNlcnbDqWUiIG3Dqm1lIHNpIG9uIGxlIHZvaXQgYWlsbGV1cnMuCiAgICAgICAgIOKGkiBDJ2VzdCBkaWZmw6lyZW50IGRlIHBvc2l0aW9uOiBhYnNvbHV0ZSAow6dhIGMnZXN0IHBsdXMgdGFyZCAhKQogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gLS0+Cgo8L2JvZHk+CjwvaHRtbD4K",
+  4: "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImZyIj4KPGhlYWQ+CiAgPG1ldGEgY2hhcnNldD0iVVRGLTgiPgogIDx0aXRsZT5FeGVyY2ljZSA0IOKAlCBDYXJ0ZSBIYWtpbWkgY29tcGzDqHRlIOKtkOKtkOKtkOKtkDwvdGl0bGU+CiAgPHN0eWxlPgoKICAgIC8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgICAgICBDU1MgRMOJQ09SQVRJRiDigJQgZMOpasOgIGZhaXQgcG91ciB0b2ksIG5lIHRvdWNoZSBwYXMgIQogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gKi8KICAgIGJvZHkgewogICAgICBmb250LWZhbWlseTogJ1NlZ29lIFVJJywgc2Fucy1zZXJpZjsKICAgICAgYmFja2dyb3VuZDogIzFCMkE0QTsKICAgICAgY29sb3I6ICNGRUYwREM7CiAgICAgIHBhZGRpbmc6IDMwcHg7CiAgICAgIG1hcmdpbjogMDsKICAgIH0KICAgIGgxIHsgY29sb3I6ICNENEFGMzc7IGJvcmRlci1ib3R0b206IDJweCBzb2xpZCAjRDRBRjM3OyBwYWRkaW5nLWJvdHRvbTogMTBweDsgfQoKICAgIC5jYXJ0ZS1maWZhIHsKICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDE2MGRlZywgI0M4QTk1MSAwJSwgIzhCNjkxNCA0MCUsICNDOEE5NTEgMTAwJSk7CiAgICAgIGJvcmRlci1yYWRpdXM6IDE0cHg7CiAgICAgIHBhZGRpbmc6IDIwcHg7CiAgICAgIHdpZHRoOiAyMjBweDsKICAgICAgbWFyZ2luOiAzMHB4IGF1dG87CiAgICAgIGJvcmRlcjogMnB4IHNvbGlkICNGRkQ3MDA7CiAgICAgIGJveC1zaGFkb3c6IDAgOHB4IDMwcHggcmdiYSgwLDAsMCwwLjUpOwogICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICAgIGNvbG9yOiAjMUIyQTRBOwogICAgICBwb3NpdGlvbjogcmVsYXRpdmU7IC8qIGTDqWrDoCBsw6AgcG91ciBsYSBjYXJ0ZSAqLwogICAgfQogICAgLmJhZGdlLW5vdGUgewogICAgICBiYWNrZ3JvdW5kOiAjMUIyQTRBOwogICAgICBjb2xvcjogI0Q0QUYzNzsKICAgICAgZm9udC1zaXplOiAyOHB4OwogICAgICBmb250LXdlaWdodDogOTAwOwogICAgICB3aWR0aDogNTBweDsKICAgICAgaGVpZ2h0OiA1MHB4OwogICAgICBib3JkZXItcmFkaXVzOiA1MCU7CiAgICAgIGRpc3BsYXk6IGZsZXg7CiAgICAgIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgICAgIGp1c3RpZnktY29udGVudDogY2VudGVyOwogICAgICBib3JkZXI6IDJweCBzb2xpZCAjRDRBRjM3OwogICAgfQogICAgLnBvc3RlLWxhYmVsIHsKICAgICAgZm9udC1zaXplOiAxMHB4OwogICAgICBmb250LXdlaWdodDogOTAwOwogICAgICBsZXR0ZXItc3BhY2luZzogM3B4OwogICAgICBtYXJnaW4tdG9wOiA1cHg7CiAgICAgIGNvbG9yOiAjMmQxYTAwOwogICAgfQogICAgLnNlcGFyYXRldXIgewogICAgICBib3JkZXI6IG5vbmU7CiAgICAgIGJvcmRlci10b3A6IDFweCBzb2xpZCByZ2JhKDAsMCwwLDAuMyk7CiAgICAgIG1hcmdpbjogMTJweCAwOwogICAgfQogICAgLm5vbS1qb3VldXIgewogICAgICBmb250LXNpemU6IDE2cHg7CiAgICAgIGZvbnQtd2VpZ2h0OiA5MDA7CiAgICAgIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7CiAgICAgIGxldHRlci1zcGFjaW5nOiAxcHg7CiAgICAgIGNvbG9yOiAjMUIyQTRBOwogICAgfQogICAgLmdyaWxsZS1zdGF0cyB7CiAgICAgIG1hcmdpbi10b3A6IDEwcHg7CiAgICAgIGZvbnQtc2l6ZTogMTFweDsKICAgICAgY29sb3I6ICMyZDFhMDA7CiAgICB9CiAgICAuc3RhdCB7CiAgICAgIGZvbnQtd2VpZ2h0OiBib2xkOwogICAgICBwYWRkaW5nOiAzcHggNXB4OwogICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICAgIHdpZHRoOiA1MHB4OwogICAgfQogICAgLnN0YXQgLmNoaWZmcmUgewogICAgICBmb250LXNpemU6IDE2cHg7CiAgICAgIGZvbnQtd2VpZ2h0OiA5MDA7CiAgICAgIGRpc3BsYXk6IGJsb2NrOwogICAgICBjb2xvcjogIzFCMkE0QTsKICAgIH0KICAgIC5vYmplY3RpZiB7CiAgICAgIGJhY2tncm91bmQ6ICNENEFGMzc7CiAgICAgIGNvbG9yOiAjMUIyQTRBOwogICAgICBib3JkZXItcmFkaXVzOiA4cHg7CiAgICAgIHBhZGRpbmc6IDE1cHggMjBweDsKICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgICAgIGZvbnQtc2l6ZTogMTVweDsKICAgICAgbWFyZ2luOiAxNXB4IDA7CiAgICAgIG1heC13aWR0aDogNjAwcHg7CiAgICB9CiAgICAuaW5kaWNlIHsKICAgICAgYmFja2dyb3VuZDogIzBEMzM0OTsKICAgICAgYm9yZGVyLWxlZnQ6IDRweCBzb2xpZCAjQzg3OTQxOwogICAgICBib3JkZXItcmFkaXVzOiAwIDhweCA4cHggMDsKICAgICAgcGFkZGluZzogMTJweCAxOHB4OwogICAgICBtYXJnaW46IDhweCAwOwogICAgICBtYXgtd2lkdGg6IDYwMHB4OwogICAgICBmb250LXNpemU6IDE0cHg7CiAgICB9CiAgICBjb2RlIHsKICAgICAgYmFja2dyb3VuZDogIzBEMTExNzsKICAgICAgY29sb3I6ICM3OUMwRkY7CiAgICAgIHBhZGRpbmc6IDJweCA3cHg7CiAgICAgIGJvcmRlci1yYWRpdXM6IDRweDsKICAgICAgZm9udC1zaXplOiAxNHB4OwogICAgfQoKCiAgICAvKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgw4AgVE9JIERFIEpPVUVSICEKICAgICAgIEV4ZXJjaWNlIDQg4oCUIENhcnRlIEhha2ltaSBjb21wbMOodGUKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CgogICAgICAgUGFzIGRlIGd1aWRlIGNldHRlIGZvaXMgISBVdGlsaXNlIGNlIHF1ZSB0dSBhcwogICAgICAgYXBwcmlzIGRhbnMgbGVzIGV4ZXJjaWNlcyAxLCAyIGV0IDMuCgogICAgICAgUFJPQkzDiE1FIDEgOiBsZXMgc3RhdHMgKFBBQywgVElSLCBQQVMuLi4pCiAgICAgICBzJ2VtcGlsZW50IGxlcyB1bmVzIHNvdXMgbGVzIGF1dHJlcy4KICAgICAgIOKGkiBUdSBkb2lzIGxlcyBhZmZpY2hlciBDw5RURSDDgCBDw5RURS4KCiAgICAgICBQUk9CTMOITUUgMiA6IGxlIGJhZGdlIGF2ZWMgbGEgbm90ZSAiODciCiAgICAgICBlc3QgZGFucyBsZSBmbHV4IG5vcm1hbCAoZW4gYmFzIGRlIGNhcnRlKS4KICAgICAgIOKGkiBUdSBkb2lzIGxlIHBsYWNlciBFTiBIQVVUIMOAIEdBVUNIRSBkZSBsYSBjYXJ0ZS4KCiAgICAgICDihpMgw4lDUklTIFRPTiBDU1MgSUNJIOKGkwogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gKi8KCiAgICAvKiBQcm9ibMOobWUgMSA6IGxlcyBzdGF0cyBjw7R0ZSDDoCBjw7R0ZSAqLwogICAgLnN0YXQgewogICAgICAvKiBRdWVsbGUgcHJvcHJpw6l0w6kgZGlzcGxheSBwZXJtZXQgZCfDqnRyZSBjw7R0ZSDDoCBjw7R0ZQogICAgICAgICB0b3V0IGVuIGdhcmRhbnQgdW5lIGxhcmdldXIgZml4ZSA/ICovCgogICAgfQoKICAgIC8qIFByb2Jsw6htZSAyIDogbGUgYmFkZ2UgZGUgbm90ZSBlbiBoYXV0IMOgIGdhdWNoZSAqLwogICAgLmJhZGdlLW5vdGUgewogICAgICAvKiBEZSBxdWVsbGUgcHJvcHJpw6l0w6kgYXMtdHUgYmVzb2luIHBvdXIgZMOpcGxhY2VyIHVuIMOpbMOpbWVudCA/ICovCiAgICAgIC8qIFJhcHBlbCA6IGxhIGNhcnRlIGEgZMOpasOgIHBvc2l0aW9uOiByZWxhdGl2ZSAqLwoKICAgIH0KCiAgICAvKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAg4oaRIEZJTiBERSBUQSBaT05FIERFIENPREUg4oaRCiAgICAgICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwoKICA8L3N0eWxlPgo8L2hlYWQ+Cjxib2R5PgoKICA8aDE+4q2Q4q2Q4q2Q4q2QIEV4ZXJjaWNlIDQg4oCUIENhcnRlIEhha2ltaSBjb21wbMOodGU8L2gxPgoKICA8ZGl2IGNsYXNzPSJvYmplY3RpZiI+CiAgICDwn46vIERldXggY2hvc2VzIMOgIGNvcnJpZ2VyIDogbGVzIHN0YXRzIGPDtHRlIMOgIGPDtHRlICsgbGUgYmFkZ2UgZGUgbm90ZSBlbiBoYXV0IMOgIGdhdWNoZS4KICA8L2Rpdj4KCiAgPHA+PGVtPlBhcyBkZSBndWlkZSBjZXR0ZSBmb2lzIOKAlCBjJ2VzdCDDoCB0b2kgZGUgcmV0cm91dmVyIGxlcyBwcm9wcmnDqXTDqXMgITwvZW0+PC9wPgoKICA8ZGl2IGNsYXNzPSJpbmRpY2UiPgogICAg8J+SoSBJbmRpY2UgMSA6IFBvdXIgbGVzIHN0YXRzIGPDtHRlIMOgIGPDtHRlIOKGkiB0dSBhcyBmYWl0IMOnYSBkYW5zIGwnZXhlcmNpY2UgMi4uLgogIDwvZGl2PgogIDxkaXYgY2xhc3M9ImluZGljZSI+CiAgICDwn5KhIEluZGljZSAyIDogUG91ciBsZSBiYWRnZSDihpIgdHUgYXMgZmFpdCDDp2EgZGFucyBsJ2V4ZXJjaWNlIDMuLi4KICA8L2Rpdj4KICA8ZGl2IGNsYXNzPSJpbmRpY2UiPgogICAg8J+SoSBJbmRpY2UgMyA6IExlIGJhZGdlIGRvaXQgYWxsZXIgZW4gPHN0cm9uZz5oYXV0IMOgIGdhdWNoZTwvc3Ryb25nPi4KICAgIFBlbnNlIMOgIDxjb2RlPnRvcDwvY29kZT4gZXQgPGNvZGU+bGVmdDwvY29kZT4gYXZlYyBkZXMgdmFsZXVycyBuw6lnYXRpdmVzLgogIDwvZGl2PgoKICA8ZGl2IGNsYXNzPSJjYXJ0ZS1maWZhIj4KCiAgICA8IS0tIEJhZGdlIGRlIG5vdGUg4oCUIGRvaXQgYWxsZXIgZW4gaGF1dCDDoCBnYXVjaGUgZGUgbGEgY2FydGUgLS0+CiAgICA8ZGl2IGNsYXNzPSJiYWRnZS1ub3RlIj44NzwvZGl2PgoKICAgIDxkaXYgY2xhc3M9InBvc3RlLWxhYmVsIj5SQjwvZGl2PgogICAgPGhyIGNsYXNzPSJzZXBhcmF0ZXVyIj4KICAgIDxkaXYgY2xhc3M9Im5vbS1qb3VldXIiPkhha2ltaTwvZGl2PgogICAgPGhyIGNsYXNzPSJzZXBhcmF0ZXVyIj4KCiAgICA8IS0tIFN0YXRzIOKAlCBkb2l2ZW50IMOqdHJlIGPDtHRlIMOgIGPDtHRlIC0tPgogICAgPGRpdiBjbGFzcz0iZ3JpbGxlLXN0YXRzIj4KICAgICAgPGRpdiBjbGFzcz0ic3RhdCI+CiAgICAgICAgUEFDCiAgICAgICAgPHNwYW4gY2xhc3M9ImNoaWZmcmUiPjk2PC9zcGFuPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ic3RhdCI+CiAgICAgICAgVElSCiAgICAgICAgPHNwYW4gY2xhc3M9ImNoaWZmcmUiPjcyPC9zcGFuPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ic3RhdCI+CiAgICAgICAgUEFTCiAgICAgICAgPHNwYW4gY2xhc3M9ImNoaWZmcmUiPjc4PC9zcGFuPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ic3RhdCI+CiAgICAgICAgRFJCCiAgICAgICAgPHNwYW4gY2xhc3M9ImNoaWZmcmUiPjg4PC9zcGFuPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ic3RhdCI+CiAgICAgICAgREVGCiAgICAgICAgPHNwYW4gY2xhc3M9ImNoaWZmcmUiPjc5PC9zcGFuPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0ic3RhdCI+CiAgICAgICAgUEhZCiAgICAgICAgPHNwYW4gY2xhc3M9ImNoaWZmcmUiPjc2PC9zcGFuPgogICAgICA8L2Rpdj4KICAgIDwvZGl2PgoKICA8L2Rpdj4KCjwvYm9keT4KPC9odG1sPgo=",
+  5: "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImZyIj4KPGhlYWQ+CiAgPG1ldGEgY2hhcnNldD0iVVRGLTgiPgogIDx0aXRsZT5FeGVyY2ljZSA1IOKAlCBCb3NzIEZpbmFsIPCfj4Y8L3RpdGxlPgogIDxzdHlsZT4KCiAgICAvKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgQ1NTIETDiUNPUkFUSUYg4oCUIGTDqWrDoCBmYWl0IHBvdXIgdG9pLCBuZSB0b3VjaGUgcGFzICEKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCiAgICBib2R5IHsKICAgICAgZm9udC1mYW1pbHk6ICdTZWdvZSBVSScsIHNhbnMtc2VyaWY7CiAgICAgIGJhY2tncm91bmQ6ICMxQjJBNEE7CiAgICAgIGNvbG9yOiAjRkVGMERDOwogICAgICBtYXJnaW46IDA7CiAgICAgIHBhZGRpbmc6IDIwcHg7CiAgICB9CgogICAgLyogTGUgaGVhZGVyIGR1IGNsdWIgKi8KICAgIC5zaXRlLWhlYWRlciB7CiAgICAgIGJhY2tncm91bmQ6ICMwRDExMTc7CiAgICAgIGJvcmRlci1ib3R0b206IDNweCBzb2xpZCAjRDRBRjM3OwogICAgICBwYWRkaW5nOiAxNXB4IDMwcHg7CiAgICAgIC8qIOKGkCBSYXBwZWwgOiB1biBoZWFkZXIgZG9pdCBwcmVuZHJlIHRvdXRlIGxhIGxhcmdldXIgIQogICAgICAgICAgIEMnZXN0IGTDqWrDoCBsZSBjYXMgaWNpIGNhciBjJ2VzdCB1biBibG9jay4KICAgICAgICAgICBNYWlzIGxlcyDDqWzDqW1lbnRzIERFREFOUyBuZSBzb250IHBhcyBlbmNvcmUgYmllbiBwbGFjw6lzLiAqLwogICAgfQoKICAgIC8qIExlIGxvZ28gw6AgZ2F1Y2hlICovCiAgICAubG9nbyB7CiAgICAgIGJhY2tncm91bmQ6ICNENEFGMzc7CiAgICAgIGNvbG9yOiAjMUIyQTRBOwogICAgICBmb250LXNpemU6IDI4cHg7CiAgICAgIGZvbnQtd2VpZ2h0OiA5MDA7CiAgICAgIHdpZHRoOiA1NXB4OwogICAgICBoZWlnaHQ6IDU1cHg7CiAgICAgIGJvcmRlci1yYWRpdXM6IDUwJTsKICAgICAgdGV4dC1hbGlnbjogY2VudGVyOwogICAgICBsaW5lLWhlaWdodDogNTVweDsKICAgICAgYm9yZGVyOiAzcHggc29saWQgI0M4Nzk0MTsKICAgIH0KCiAgICAvKiBMZSBub20gZHUgY2x1YiBhdSBjZW50cmUgKi8KICAgIC5jbHViLW5hbWUgewogICAgICBmb250LXNpemU6IDIycHg7CiAgICAgIGZvbnQtd2VpZ2h0OiA5MDA7CiAgICAgIGNvbG9yOiAjRDRBRjM3OwogICAgICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwogICAgICBsZXR0ZXItc3BhY2luZzogM3B4OwogICAgICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgICB9CiAgICAuY2x1Yi1uYW1lIHNwYW4gewogICAgICBkaXNwbGF5OiBibG9jazsKICAgICAgZm9udC1zaXplOiAxMXB4OwogICAgICBjb2xvcjogI0M4Nzk0MTsKICAgICAgbGV0dGVyLXNwYWNpbmc6IDVweDsKICAgICAgZm9udC13ZWlnaHQ6IG5vcm1hbDsKICAgIH0KCiAgICAvKiBMZSBtZW51IGRlIG5hdmlnYXRpb24gw6AgZHJvaXRlICovCiAgICAubmF2LW1lbnUgewogICAgICB0ZXh0LWFsaWduOiByaWdodDsKICAgIH0KICAgIC5uYXYtbWVudSBhIHsKICAgICAgY29sb3I6ICNGRUYwREM7CiAgICAgIHRleHQtZGVjb3JhdGlvbjogbm9uZTsKICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgICAgIGZvbnQtc2l6ZTogMTNweDsKICAgICAgbWFyZ2luLWxlZnQ6IDIwcHg7CiAgICAgIHBhZGRpbmc6IDZweCAxMnB4OwogICAgICBib3JkZXItcmFkaXVzOiA0cHg7CiAgICAgIHRyYW5zaXRpb246IGJhY2tncm91bmQgMC4yczsKICAgIH0KICAgIC5uYXYtbWVudSBhOmhvdmVyIHsKICAgICAgYmFja2dyb3VuZDogI0Q0QUYzNzsKICAgICAgY29sb3I6ICMxQjJBNEE7CiAgICB9CgogICAgLyogWm9uZSBkZSBjb250ZW51IHNvdXMgbGUgaGVhZGVyICovCiAgICAuc2l0ZS1jb250ZW50IHsKICAgICAgcGFkZGluZzogNDBweCAzMHB4OwogICAgICBtYXgtd2lkdGg6IDkwMHB4OwogICAgICBtYXJnaW46IDAgYXV0bzsKICAgIH0KICAgIC5oZXJvIHsKICAgICAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzBEMzM0OSwgIzFCMkE0QSk7CiAgICAgIGJvcmRlcjogMnB4IHNvbGlkICNENEFGMzc7CiAgICAgIGJvcmRlci1yYWRpdXM6IDEycHg7CiAgICAgIHBhZGRpbmc6IDQwcHg7CiAgICAgIHRleHQtYWxpZ246IGNlbnRlcjsKICAgICAgbWFyZ2luLWJvdHRvbTogMzBweDsKICAgIH0KICAgIC5oZXJvIGgyIHsgY29sb3I6ICNENEFGMzc7IGZvbnQtc2l6ZTogMjhweDsgbWFyZ2luLWJvdHRvbTogMTBweDsgfQogICAgLmhlcm8gcCB7IGNvbG9yOiAjQzg3OTQxOyBmb250LXNpemU6IDE2cHg7IH0KICAgIC5jYXJkcy16b25lIHsKICAgICAgYmFja2dyb3VuZDogIzJkNWEyNzsKICAgICAgYm9yZGVyLXJhZGl1czogMTBweDsKICAgICAgcGFkZGluZzogMjBweDsKICAgICAgYm9yZGVyOiAycHggc29saWQgI0Q0QUYzNzsKICAgICAgbWluLWhlaWdodDogODBweDsKICAgIH0KICAgIC5vYmplY3RpZiB7CiAgICAgIGJhY2tncm91bmQ6ICNENEFGMzc7CiAgICAgIGNvbG9yOiAjMUIyQTRBOwogICAgICBib3JkZXItcmFkaXVzOiA4cHg7CiAgICAgIHBhZGRpbmc6IDE1cHggMjBweDsKICAgICAgZm9udC13ZWlnaHQ6IGJvbGQ7CiAgICAgIGZvbnQtc2l6ZTogMTVweDsKICAgICAgbWFyZ2luOiAxNXB4IDA7CiAgICB9CiAgICAuaW5kaWNlIHsKICAgICAgYmFja2dyb3VuZDogIzBEMzM0OTsKICAgICAgYm9yZGVyLWxlZnQ6IDRweCBzb2xpZCAjQzg3OTQxOwogICAgICBib3JkZXItcmFkaXVzOiAwIDhweCA4cHggMDsKICAgICAgcGFkZGluZzogMTJweCAxOHB4OwogICAgICBtYXJnaW46IDhweCAwOwogICAgICBmb250LXNpemU6IDE0cHg7CiAgICB9CiAgICBjb2RlIHsKICAgICAgYmFja2dyb3VuZDogIzBEMTExNzsKICAgICAgY29sb3I6ICM3OUMwRkY7CiAgICAgIHBhZGRpbmc6IDJweCA3cHg7CiAgICAgIGJvcmRlci1yYWRpdXM6IDRweDsKICAgICAgZm9udC1zaXplOiAxNHB4OwogICAgfQoKCiAgICAvKiA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICAgICAgw4AgVE9JIERFIEpPVUVSICEKICAgICAgIEV4ZXJjaWNlIDUg4oCUIEJvc3MgRmluYWwgOiBIZWFkZXIgZHUgQ2x1YgogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KCiAgICAgICBQUk9CTMOITUUgOiBsZSBsb2dvLCBsZSBub20gZHUgY2x1YiBldCBsZSBtZW51CiAgICAgICBzb250IGVtcGlsw6lzIGxlcyB1bnMgc291cyBsZXMgYXV0cmVzLgoKICAgICAgIFVuIHZyYWkgaGVhZGVyIGRlIHNpdGUgd2ViIGMnZXN0IDoKICAgICAgICAgW0xPR09dICAgICAgW05PTSBEVSBDTFVCXSAgICAgIFtNRU5VXQogICAgICAgICAoZ2F1Y2hlKSAgICAgIChjZW50cmUpICAgICAgICAgKGRyb2l0ZSkKCiAgICAgICBVdGlsaXNlIFRPVVQgY2UgcXVlIHR1IGFzIGFwcHJpcyA6CiAgICAgICAgIOKAoiBkaXNwbGF5OiBpbmxpbmUtYmxvY2sKICAgICAgICAg4oCiIHdpZHRoIChlbiBwb3VyY2VudGFnZSAhKQogICAgICAgICDigKIgdmVydGljYWwtYWxpZ24KICAgICAgICAg4oCiIHBvc2l0aW9uOiByZWxhdGl2ZSBzaSBiZXNvaW4KCiAgICAgICBQQVMgREUgR1VJREUuIEF1Y3VuIGluZGljZSBkZSBjb2RlLgogICAgICAgSnVzdGUgNCBxdWVzdGlvbnMgw6AgdGUgcG9zZXIg4oaTCgogICAgICAg4oaTIMOJQ1JJUyBUT04gQ1NTIElDSSDihpMKICAgICAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09ICovCgogICAgLyogUXVlc3Rpb24gMSA6CiAgICAgICBDb21tZW50IG1ldHRyZSAubG9nbywgLmNsdWItbmFtZSBldCAubmF2LW1lbnUKICAgICAgIHN1ciBsYSBNw4pNRSBsaWduZSBkYW5zIGxlIGhlYWRlciA/ICAgICAgICAgICAgICAqLwoKICAgIC5sb2dvIHsKCiAgICB9CgogICAgLmNsdWItbmFtZSB7CgogICAgfQoKICAgIC5uYXYtbWVudSB7CgogICAgfQoKICAgIC8qIFF1ZXN0aW9uIDIgOgogICAgICAgUXVlbGxlIGxhcmdldXIgZG9ubmVyIMOgIGNoYWN1biBwb3VyIHF1J2lscwogICAgICAgdGllbm5lbnQgdG91cyBsZXMgdHJvaXMgc3VyIGxhIG3Dqm1lIGxpZ25lID8KICAgICAgIChpbmRpY2UgOiAzIMOpbMOpbWVudHMgY8O0dGUgw6AgY8O0dGUuLi4gMTAwJSDDtyAzID0gPykgICovCgogICAgLyogUXVlc3Rpb24gMyA6CiAgICAgICBDb21tZW50IGxlcyBhbGlnbmVyIHByb3ByZW1lbnQgZW4gaGF1dGV1ciA/ICAgICovCgogICAgLyogUXVlc3Rpb24gNCAoYm9udXMpIDoKICAgICAgIExlIG5vbSBkdSBjbHViIG4nZXN0IHBhcyB2cmFpbWVudCBhdSBjZW50cmUuCiAgICAgICBQZXV4LXR1IHV0aWxpc2VyIHBvc2l0aW9uOiByZWxhdGl2ZSBwb3VyCiAgICAgICBsJ2FqdXN0ZXIgPyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICovCgogICAgLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0KICAgICAgIOKGkSBGSU4gREUgVEEgWk9ORSBERSBDT0RFIOKGkQogICAgICAgPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gKi8KCiAgPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KCiAgPGRpdiBjbGFzcz0ib2JqZWN0aWYiIHN0eWxlPSJtYXJnaW46MCAwIDIwcHggMDsiPgogICAg8J+PhiBCb3NzIEZpbmFsIOKAlCBDb25zdHJ1aXMgbGUgaGVhZGVyIGNvbXBsZXQgZHUgc2l0ZSBGQyBBdGxhcyBBY2FkZW15ICEKICA8L2Rpdj4KCiAgPGRpdiBjbGFzcz0iaW5kaWNlIj4KICAgIPCfkqEgTG9nbyDDoCBnYXVjaGUgwrcgTm9tIGF1IGNlbnRyZSDCtyBNZW51IMOgIGRyb2l0ZQogIDwvZGl2PgogIDxkaXYgY2xhc3M9ImluZGljZSI+CiAgICDwn5KhIDMgw6lsw6ltZW50cyBjw7R0ZSDDoCBjw7R0ZSDihpIgcGVuc2Ugw6AgbCdleGVyY2ljZSAyLi4uCiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0iaW5kaWNlIj4KICAgIPCfkqEgTGVzIGxhcmdldXJzIGVuICUgOiAzIMOpbMOpbWVudHMgcXVpIHJlbXBsaXNzZW50IDEwMCUg4oaSIGNoYWN1biBmYWl0IGVudmlyb24gMzMlCiAgPC9kaXY+CiAgPGRpdiBjbGFzcz0iaW5kaWNlIj4KICAgIPCfkqEgQXR0ZW50aW9uIGF1eCBlc3BhY2VzIGVudHJlIGxlcyBiYWxpc2VzIGlubGluZS1ibG9jayAhIFNpIMOnYSBkw6lib3JkZSwgZXNzYWllIDMyJSBhdSBsaWV1IGRlIDMzJS4KICA8L2Rpdj4KCiAgPGJyPgoKICA8IS0tIExFIEhFQURFUiBEVSBTSVRFIOKAlCDDgCBUT0kgREUgTEUgTUVUVFJFIEVOIEZPUk1FICEgLS0+CiAgPGRpdiBjbGFzcz0ic2l0ZS1oZWFkZXIiPgoKICAgIDwhLS0gTG9nbyA6IGRvaXQgw6p0cmUgw6AgR0FVQ0hFIC0tPgogICAgPGRpdiBjbGFzcz0ibG9nbyI+4pq9PC9kaXY+CgogICAgPCEtLSBOb20gZHUgY2x1YiA6IGRvaXQgw6p0cmUgYXUgQ0VOVFJFIC0tPgogICAgPGRpdiBjbGFzcz0iY2x1Yi1uYW1lIj4KICAgICAgRkMgQXRsYXMgQWNhZGVteQogICAgICA8c3Bhbj5Gw6hzIOKAoiBNYXJvYzwvc3Bhbj4KICAgIDwvZGl2PgoKICAgIDwhLS0gTWVudSA6IGRvaXQgw6p0cmUgw6AgRFJPSVRFIC0tPgogICAgPG5hdiBjbGFzcz0ibmF2LW1lbnUiPgogICAgICA8YSBocmVmPSIjIj5BY2N1ZWlsPC9hPgogICAgICA8YSBocmVmPSIjIj7DiXF1aXBlPC9hPgogICAgICA8YSBocmVmPSIjIj5NYXRjaHM8L2E+CiAgICAgIDxhIGhyZWY9IiMiPkNvbnRhY3Q8L2E+CiAgICA8L25hdj4KCiAgPC9kaXY+CgogIDwhLS0gQ29udGVudSBkdSBzaXRlIChkw6lqw6AgZmFpdCwgbmUgdG91Y2hlIHBhcykgLS0+CiAgPGRpdiBjbGFzcz0ic2l0ZS1jb250ZW50Ij4KICAgIDxkaXYgY2xhc3M9Imhlcm8iPgogICAgICA8aDI+QmllbnZlbnVlIGF1IEZDIEF0bGFzIEFjYWRlbXk8L2gyPgogICAgICA8cD5Gb3Jtb25zIGxlcyBjaGFtcGlvbnMgZGUgZGVtYWluIPCfjI08L3A+CiAgICA8L2Rpdj4KICAgIDxoMiBzdHlsZT0iY29sb3I6I0Q0QUYzNzsiPk5vdHJlIMOpcXVpcGU8L2gyPgogICAgPGRpdiBjbGFzcz0iY2FyZHMtem9uZSI+CiAgICAgIDxwIHN0eWxlPSJjb2xvcjojRkVGMERDOyB0ZXh0LWFsaWduOmNlbnRlcjsgcGFkZGluZzoxMHB4IDA7Ij4KICAgICAgICDihpAgTGVzIGNhcnRlcyBqb3VldXJzIGlyb250IGljaSAoZXhvIDQgISkKICAgICAgPC9wPgogICAgPC9kaXY+CiAgPC9kaXY+Cgo8L2JvZHk+CjwvaHRtbD4K",
+};
+
+function downloadExercice(num) {
+  const filename = 'exercice' + num + '.html';
+  const b64 = EX_FILES[num];
+  if (!b64) return;
+  const raw = atob(b64);
+  const bytes = new Uint8Array(raw.length);
+  for (let i = 0; i < raw.length; i++) bytes[i] = raw.charCodeAt(i);
+  const blob = new Blob([bytes], { type: 'application/octet-stream' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+}
+
 function toggleGuide(hdr) {
   const body  = hdr.nextElementSibling;
   const arrow = hdr.querySelector('.guide-arrow');
@@ -1116,6 +1529,7 @@ function toggleGuide(hdr) {
 
 /* INIT */
 makeNav();
+makeCoursPage();
 makePages();
 </script>
 </body>

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 5 — Boss Final 🏆</title>
+  <style>
+
+    /* ============================================
+       CSS DÉCORATIF — déjà fait pour toi, ne touche pas !
+       ============================================ */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1B2A4A;
+      color: #FEF0DC;
+      margin: 0;
+      padding: 20px;
+    }
+
+    /* Le header du club */
+    .site-header {
+      background: #0D1117;
+      border-bottom: 3px solid #D4AF37;
+      padding: 15px 30px;
+      /* ← Rappel : un header doit prendre toute la largeur !
+           C'est déjà le cas ici car c'est un block.
+           Mais les éléments DEDANS ne sont pas encore bien placés. */
+    }
+
+    /* Le logo à gauche */
+    .logo {
+      background: #D4AF37;
+      color: #1B2A4A;
+      font-size: 28px;
+      font-weight: 900;
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 55px;
+      border: 3px solid #C87941;
+    }
+
+    /* Le nom du club au centre */
+    .club-name {
+      font-size: 22px;
+      font-weight: 900;
+      color: #D4AF37;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      text-align: center;
+    }
+    .club-name span {
+      display: block;
+      font-size: 11px;
+      color: #C87941;
+      letter-spacing: 5px;
+      font-weight: normal;
+    }
+
+    /* Le menu de navigation à droite */
+    .nav-menu {
+      text-align: right;
+    }
+    .nav-menu a {
+      color: #FEF0DC;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 13px;
+      margin-left: 20px;
+      padding: 6px 12px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .nav-menu a:hover {
+      background: #D4AF37;
+      color: #1B2A4A;
+    }
+
+    /* Zone de contenu sous le header */
+    .site-content {
+      padding: 40px 30px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .hero {
+      background: linear-gradient(135deg, #0D3349, #1B2A4A);
+      border: 2px solid #D4AF37;
+      border-radius: 12px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .hero h2 { color: #D4AF37; font-size: 28px; margin-bottom: 10px; }
+    .hero p { color: #C87941; font-size: 16px; }
+    .cards-zone {
+      background: #2d5a27;
+      border-radius: 10px;
+      padding: 20px;
+      border: 2px solid #D4AF37;
+      min-height: 80px;
+    }
+    .objectif {
+      background: #D4AF37;
+      color: #1B2A4A;
+      border-radius: 8px;
+      padding: 15px 20px;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 15px 0;
+    }
+    .indice {
+      background: #0D3349;
+      border-left: 4px solid #C87941;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 18px;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    code {
+      background: #0D1117;
+      color: #79C0FF;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+
+    /* ============================================
+       À TOI DE JOUER !
+       Exercice 5 — Boss Final : Header du Club
+       ============================================
+
+       PROBLÈME : le logo, le nom du club et le menu
+       sont empilés les uns sous les autres.
+
+       Un vrai header de site web c'est :
+         [LOGO]      [NOM DU CLUB]      [MENU]
+         (gauche)      (centre)         (droite)
+
+       Utilise TOUT ce que tu as appris :
+         • display: inline-block
+         • width (en pourcentage !)
+         • vertical-align
+         • position: relative si besoin
+
+       PAS DE GUIDE. Aucun indice de code.
+       Juste 4 questions à te poser ↓
+
+       ↓ ÉCRIS TON CSS ICI ↓
+       ============================================ */
+
+    /* Question 1 :
+       Comment mettre .logo, .club-name et .nav-menu
+       sur la MÊME ligne dans le header ?              */
+
+    .logo {
+
+    }
+
+    .club-name {
+
+    }
+
+    .nav-menu {
+
+    }
+
+    /* Question 2 :
+       Quelle largeur donner à chacun pour qu'ils
+       tiennent tous les trois sur la même ligne ?
+       (indice : 3 éléments côte à côte... 100% ÷ 3 = ?)  */
+
+    /* Question 3 :
+       Comment les aligner proprement en hauteur ?    */
+
+    /* Question 4 (bonus) :
+       Le nom du club n'est pas vraiment au centre.
+       Peux-tu utiliser position: relative pour
+       l'ajuster ?                                    */
+
+    /* ============================================
+       ↑ FIN DE TA ZONE DE CODE ↑
+       ============================================ */
+
+  </style>
+</head>
+<body>
+
+  <div class="objectif" style="margin:0 0 20px 0;">
+    🏆 Boss Final — Construis le header complet du site FC Atlas Academy !
+  </div>
+
+  <div class="indice">
+    💡 Logo à gauche · Nom au centre · Menu à droite
+  </div>
+  <div class="indice">
+    💡 3 éléments côte à côte → pense à l'exercice 2...
+  </div>
+  <div class="indice">
+    💡 Les largeurs en % : 3 éléments qui remplissent 100% → chacun fait environ 33%
+  </div>
+  <div class="indice">
+    💡 Attention aux espaces entre les balises inline-block ! Si ça déborde, essaie 32% au lieu de 33%.
+  </div>
+
+  <br>
+
+  <!-- LE HEADER DU SITE — À TOI DE LE METTRE EN FORME ! -->
+  <div class="site-header">
+
+    <!-- Logo : doit être à GAUCHE -->
+    <div class="logo">⚽</div>
+
+    <!-- Nom du club : doit être au CENTRE -->
+    <div class="club-name">
+      FC Atlas Academy
+      <span>Fès • Maroc</span>
+    </div>
+
+    <!-- Menu : doit être à DROITE -->
+    <nav class="nav-menu">
+      <a href="#">Accueil</a>
+      <a href="#">Équipe</a>
+      <a href="#">Matchs</a>
+      <a href="#">Contact</a>
+    </nav>
+
+  </div>
+
+  <!-- Contenu du site (déjà fait, ne touche pas) -->
+  <div class="site-content">
+    <div class="hero">
+      <h2>Bienvenue au FC Atlas Academy</h2>
+      <p>Formons les champions de demain 🌍</p>
+    </div>
+    <h2 style="color:#D4AF37;">Notre équipe</h2>
+    <div class="cards-zone">
+      <p style="color:#FEF0DC; text-align:center; padding:10px 0;">
+        ← Les cartes joueurs iront ici (exo 4 !)
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>

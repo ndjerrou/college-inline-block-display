@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Exercice 4 — Carte Hakimi complète ⭐⭐⭐⭐</title>
+  <style>
+
+    /* ============================================
+       CSS DÉCORATIF — déjà fait pour toi, ne touche pas !
+       ============================================ */
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #1B2A4A;
+      color: #FEF0DC;
+      padding: 30px;
+      margin: 0;
+    }
+    h1 { color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 10px; }
+
+    .carte-fifa {
+      background: linear-gradient(160deg, #C8A951 0%, #8B6914 40%, #C8A951 100%);
+      border-radius: 14px;
+      padding: 20px;
+      width: 220px;
+      margin: 30px auto;
+      border: 2px solid #FFD700;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      text-align: center;
+      color: #1B2A4A;
+      position: relative; /* déjà là pour la carte */
+    }
+    .badge-note {
+      background: #1B2A4A;
+      color: #D4AF37;
+      font-size: 28px;
+      font-weight: 900;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #D4AF37;
+    }
+    .poste-label {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin-top: 5px;
+      color: #2d1a00;
+    }
+    .separateur {
+      border: none;
+      border-top: 1px solid rgba(0,0,0,0.3);
+      margin: 12px 0;
+    }
+    .nom-joueur {
+      font-size: 16px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #1B2A4A;
+    }
+    .grille-stats {
+      margin-top: 10px;
+      font-size: 11px;
+      color: #2d1a00;
+    }
+    .stat {
+      font-weight: bold;
+      padding: 3px 5px;
+      text-align: center;
+      width: 50px;
+    }
+    .stat .chiffre {
+      font-size: 16px;
+      font-weight: 900;
+      display: block;
+      color: #1B2A4A;
+    }
+    .objectif {
+      background: #D4AF37;
+      color: #1B2A4A;
+      border-radius: 8px;
+      padding: 15px 20px;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 15px 0;
+      max-width: 600px;
+    }
+    .indice {
+      background: #0D3349;
+      border-left: 4px solid #C87941;
+      border-radius: 0 8px 8px 0;
+      padding: 12px 18px;
+      margin: 8px 0;
+      max-width: 600px;
+      font-size: 14px;
+    }
+    code {
+      background: #0D1117;
+      color: #79C0FF;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+
+    /* ============================================
+       À TOI DE JOUER !
+       Exercice 4 — Carte Hakimi complète
+       ============================================
+
+       Pas de guide cette fois ! Utilise ce que tu as
+       appris dans les exercices 1, 2 et 3.
+
+       PROBLÈME 1 : les stats (PAC, TIR, PAS...)
+       s'empilent les unes sous les autres.
+       → Tu dois les afficher CÔTE À CÔTE.
+
+       PROBLÈME 2 : le badge avec la note "87"
+       est dans le flux normal (en bas de carte).
+       → Tu dois le placer EN HAUT À GAUCHE de la carte.
+
+       ↓ ÉCRIS TON CSS ICI ↓
+       ============================================ */
+
+    /* Problème 1 : les stats côte à côte */
+    .stat {
+      /* Quelle propriété display permet d'être côte à côte
+         tout en gardant une largeur fixe ? */
+
+    }
+
+    /* Problème 2 : le badge de note en haut à gauche */
+    .badge-note {
+      /* De quelle propriété as-tu besoin pour déplacer un élément ? */
+      /* Rappel : la carte a déjà position: relative */
+
+    }
+
+    /* ============================================
+       ↑ FIN DE TA ZONE DE CODE ↑
+       ============================================ */
+
+  </style>
+</head>
+<body>
+
+  <h1>⭐⭐⭐⭐ Exercice 4 — Carte Hakimi complète</h1>
+
+  <div class="objectif">
+    🎯 Deux choses à corriger : les stats côte à côte + le badge de note en haut à gauche.
+  </div>
+
+  <p><em>Pas de guide cette fois — c'est à toi de retrouver les propriétés !</em></p>
+
+  <div class="indice">
+    💡 Indice 1 : Pour les stats côte à côte → tu as fait ça dans l'exercice 2...
+  </div>
+  <div class="indice">
+    💡 Indice 2 : Pour le badge → tu as fait ça dans l'exercice 3...
+  </div>
+  <div class="indice">
+    💡 Indice 3 : Le badge doit aller en <strong>haut à gauche</strong>.
+    Pense à <code>top</code> et <code>left</code> avec des valeurs négatives.
+  </div>
+
+  <div class="carte-fifa">
+
+    <!-- Badge de note — doit aller en haut à gauche de la carte -->
+    <div class="badge-note">87</div>
+
+    <div class="poste-label">RB</div>
+    <hr class="separateur">
+    <div class="nom-joueur">Hakimi</div>
+    <hr class="separateur">
+
+    <!-- Stats — doivent être côte à côte -->
+    <div class="grille-stats">
+      <div class="stat">
+        PAC
+        <span class="chiffre">96</span>
+      </div>
+      <div class="stat">
+        TIR
+        <span class="chiffre">72</span>
+      </div>
+      <div class="stat">
+        PAS
+        <span class="chiffre">78</span>
+      </div>
+      <div class="stat">
+        DRB
+        <span class="chiffre">88</span>
+      </div>
+      <div class="stat">
+        DEF
+        <span class="chiffre">79</span>
+      </div>
+      <div class="stat">
+        PHY
+        <span class="chiffre">76</span>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
